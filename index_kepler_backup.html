@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PALANTIR - Plataforma de Geointeligencia y Cruce de Datos Globales</title>
+
+    <!-- Uber Font -->
+    <link rel="stylesheet" href="https://d1a3f4spazzrp4.cloudfront.net/kepler.gl/uber-fonts/4.0.0/superfine.css" />
+
+    <!-- MapBox and MapLibre CSS -->
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://unpkg.com/maplibre-gl@^3/dist/maplibre-gl.css" rel="stylesheet" />
+
+    <!-- ES Module Shims for React 19 + Kepler.gl UMD compatibility -->
+    <script>
+      window.esmsInitOptions = { shimMode: true };
+    </script>
+    <script src="https://unpkg.com/es-module-shims@2.8.1/dist/es-module-shims.js" crossorigin="anonymous"></script>
+
+    <script type="importmap-shim">
+      {
+        "imports": {
+          "react":              "https://esm.sh/react@19.1.0",
+          "react/jsx-runtime":  "https://esm.sh/react@19.1.0/jsx-runtime",
+          "react-dom":          "https://esm.sh/react-dom@19.1.0?external=react",
+          "react-dom/client":   "https://esm.sh/react-dom@19.1.0/client?external=react",
+          "redux":              "https://esm.sh/redux@5.0.1",
+          "react-redux":        "https://esm.sh/react-redux@9.3.0?external=react,react-dom,redux",
+          "styled-components":  "https://esm.sh/styled-components@6.1.19?external=react,react-dom"
+        }
+      }
+    </script>
+
+    <script type="module-shim">
+      import * as React           from 'react';
+      import * as ReactDOM        from 'react-dom';
+      import * as ReactDOMClient  from 'react-dom/client';
+      import * as Redux           from 'redux';
+      import * as ReactRedux      from 'react-redux';
+      import * as StyledComponents from 'styled-components';
+
+      window.React          = React.default || React;
+      window.ReactDOM       = Object.assign({}, ReactDOM.default || ReactDOM, ReactDOMClient);
+      window.Redux          = Redux.default || Redux;
+      window.ReactRedux     = ReactRedux.default || ReactRedux;
+      window.styled         = Object.assign(StyledComponents.default, StyledComponents);
+
+      function loadScript(src) {
+        return new Promise(function(resolve, reject) {
+          var script = document.createElement('script');
+          script.src = src;
+          script.crossOrigin = 'anonymous';
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      loadScript('https://unpkg.com/kepler.gl@3.3.0-alpha.6/umd/keplergl.min.js')
+        .then(function() {
+          document.querySelectorAll('script[type="text/kepler-bootstrap"]').forEach(function(node) {
+            var script = document.createElement('script');
+            script.text = node.textContent;
+            document.body.appendChild(script);
+          });
+        })
+        .catch(function(err) {
+          console.error('kepler.gl: Error al cargar UMD bundle', err);
+          document.getElementById('loading-status').innerText = 'Error al cargar Kepler.gl: ' + err;
+        });
+    </script>
+
+    <style type="text/css">
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #0b0e14;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #e0e6ed;
+      }
+      #app {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+      #loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, #151b26 0%, #080a0f 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
+      }
+      .palantir-badge {
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #00e5ff;
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .palantir-title {
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #ffffff;
+        margin: 0 0 10px 0;
+        text-shadow: 0 2px 20px rgba(0, 229, 255, 0.4);
+      }
+      .palantir-subtitle {
+        font-size: 14px;
+        color: #8b9bb4;
+        margin-bottom: 35px;
+        max-width: 580px;
+        text-align: center;
+        line-height: 1.5;
+      }
+      .datasets-progress-box {
+        background: rgba(18, 24, 38, 0.85);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        border-radius: 12px;
+        padding: 24px 28px;
+        width: 520px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      }
+      .dataset-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        font-size: 13px;
+      }
+      .dataset-item:last-child { margin-bottom: 0; }
+      .dataset-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        color: #d1d9e6;
+      }
+      .dataset-status {
+        font-size: 12px;
+        font-family: monospace;
+        color: #00e5ff;
+      }
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(0, 229, 255, 0.2);
+        border-top-color: #00e5ff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: inline-block;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .ready-check { color: #00e676; font-weight: bold; }
+      #banner-info {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(11, 14, 20, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 11px;
+        color: #90a4ae;
+        z-index: 100;
+        pointer-events: none;
+        backdrop-filter: blur(8px);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-overlay">
+      <div class="palantir-badge">
+        <span style="font-size: 16px;">⬡</span> PALANTIR GEOSPATIAL INTELLIGENCE
+      </div>
+      <h1 class="palantir-title">Plataforma de Integración Global</h1>
+      <p class="palantir-subtitle">
+        Iniciando motor Kepler.gl con aceleración por GPU. Cargando y cruzando las 4 capas maestras de energía, infraestructura crítica, transporte y cobertura de cultivos.
+      </p>
+
+      <div class="datasets-progress-box">
+        <div class="dataset-item" id="item-wri">
+          <span class="dataset-name">⚡ Energía e Industria (WRI - 34.936 centrales)</span>
+          <span class="dataset-status" id="status-wri"><span class="spinner"></span> Cargando...</span>
+        </div>
+        <div class="dataset-item" id="item-gem">
+          <span class="dataset-name">🛢️ Infraestructura Crítica (GEM - Gas y Oleoductos)</span>
+          <span class="dataset-status" id="status-gem"><span class="spinner"></span> Cargando...</span>
+        </div>
+        <div class="dataset-item" id="item-osm">
+          <span class="dataset-name">🚆 Redes y Transporte (OSM - Alta Tensión y Vías)</span>
+          <span class="dataset-status" id="status-osm"><span class="spinner"></span> Cargando...</span>
+        </div>
+        <div class="dataset-item" id="item-esa">
+          <span class="dataset-name">🌾 Cobertura de Cultivos (ESA WorldCover 10m)</span>
+          <span class="dataset-status" id="status-esa"><span class="spinner"></span> Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="app"></div>
+    <div id="banner-info">
+      PALANTIR | Kepler.gl 3.3 | WRI + GEM + OSM + ESA WorldCover
+    </div>
+
+    <script type="text/kepler-bootstrap">
+      /** CONFIGURACION STORE **/
+      const reducers = (function createReducers(redux, keplerGl) {
+        return redux.combineReducers({
+          keplerGl: keplerGl.keplerGlReducer
+        });
+      })(Redux, KeplerGl);
+
+      const middleWares = (function createMiddlewares(keplerGl) {
+        return keplerGl.enhanceReduxMiddleware([]);
+      })(KeplerGl);
+
+      const enhancers = (function createEnhancers(redux, middles) {
+        return redux.applyMiddleware(...middles);
+      })(Redux, middleWares);
+
+      const store = (function createStore(redux, enhancers) {
+        return redux.createStore(reducers, {}, redux.compose(enhancers));
+      })(Redux, enhancers);
+
+      /** COMPONENTE PRINCIPAL **/
+      const KeplerElement = (function makeKeplerElement(react, keplerGl) {
+        return function App() {
+          var _useState = react.useState({ width: window.innerWidth, height: window.innerHeight });
+          var dimensions = _useState[0];
+          var setDimensions = _useState[1];
+
+          react.useEffect(function () {
+            function onResize() {
+              setDimensions({ width: window.innerWidth, height: window.innerHeight });
+            }
+            window.addEventListener('resize', onResize);
+            return function () { window.removeEventListener('resize', onResize); };
+          }, []);
+
+          return react.createElement(
+            'div',
+            { style: { position: 'absolute', left: 0, top: 0, width: '100vw', height: '100vh' } },
+            react.createElement(keplerGl.KeplerGl, {
+              id: 'palantir-map',
+              mapboxApiAccessToken: 'pk.xxx.yyy',
+              width: dimensions.width,
+              height: dimensions.height
+            })
+          );
+        };
+      })(React, KeplerGl);
+
+      const app = (function createReactReduxProvider(react, reactRedux, KeplerElement) {
+        return react.createElement(
+          reactRedux.Provider,
+          { store },
+          react.createElement(KeplerElement, null)
+        );
+      })(React, ReactRedux, KeplerElement);
+
+      /** RENDER EN DOM **/
+      (function render(reactDOM, app) {
+        const root = reactDOM.createRoot(document.getElementById('app'));
+        root.render(app);
+      })(ReactDOM, app);
+
+      /** CARGA ASÍNCRONA DE LOS 4 DATASETS **/
+      (async function loadPalantirDatasets(keplerGl, store) {
+        async function fetchText(url) {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('HTTP ' + res.status + ' al descargar ' + url);
+          return await res.text();
+        }
+
+        async function fetchJson(url) {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('HTTP ' + res.status + ' al descargar ' + url);
+          return await res.json();
+        }
+
+        try {
+          // 1. WRI Power Plants (CSV)
+          const wriCsv = await fetchText('./datasets/global_power_plants_wri.csv');
+          document.getElementById('status-wri').innerHTML = '<span class="ready-check">✓</span> 34.936 centrales';
+
+          // 2. GEM Pipelines (GeoJSON Core)
+          const gemGeo = await fetchJson('./datasets/gem_critical_pipelines_core.geojson');
+          document.getElementById('status-gem').innerHTML = '<span class="ready-check">✓</span> ' + gemGeo.features.length + ' ductos';
+
+          // 3. OSM Infrastructure (GeoJSON)
+          const osmGeo = await fetchJson('./datasets/osm_transport_power_grid.geojson');
+          document.getElementById('status-osm').innerHTML = '<span class="ready-check">✓</span> ' + osmGeo.features.length + ' redes';
+
+          // 4. ESA WorldCover Crops (GeoJSON)
+          const esaGeo = await fetchJson('./datasets/esa_worldcover_agricultural_crops.geojson');
+          document.getElementById('status-esa').innerHTML = '<span class="ready-check">✓</span> ' + esaGeo.features.length + ' países/regiones';
+
+          // Procesar datasets con los parsers nativos de Kepler.gl
+          const dataWri = keplerGl.processCsvData(wriCsv);
+          const dataGem = keplerGl.processGeojson(gemGeo);
+          const dataOsm = keplerGl.processGeojson(osmGeo);
+          const dataEsa = keplerGl.processGeojson(esaGeo);
+
+          const datasets = [
+            {
+              info: {
+                id: 'wri_power_plants',
+                label: '⚡ Energía e Industria - Centrales (WRI)',
+                color: [255, 214, 0]
+              },
+              data: dataWri
+            },
+            {
+              info: {
+                id: 'gem_pipelines',
+                label: '🛢️ Infraestructura Crítica - Oleo/Gasoductos (GEM)',
+                color: [0, 229, 255]
+              },
+              data: dataGem
+            },
+            {
+              info: {
+                id: 'osm_infrastructure',
+                label: '🚆 Redes y Transporte - Alta Tensión y Vías (OSM)',
+                color: [255, 145, 0]
+              },
+              data: dataOsm
+            },
+            {
+              info: {
+                id: 'esa_worldcover',
+                label: '🌾 Cobertura de Cultivos - ESA WorldCover 10m',
+                color: [76, 175, 80]
+              },
+              data: dataEsa
+            }
+          ];
+
+          // Despachar a Kepler.gl
+          store.dispatch(
+            keplerGl.addDataToMap({
+              datasets: datasets,
+              options: {
+                centerMap: true,
+                readOnly: false
+              }
+            })
+          );
+
+          // Ocultar pantalla de carga con animación fluida
+          setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.display = 'none'; }, 600);
+          }, 800);
+
+        } catch (err) {
+          console.error('Error cargando datasets en Palantir:', err);
+          document.querySelector('.palantir-subtitle').innerHTML =
+            '<span style="color:#ff5252; font-weight:bold;">Error de carga: ' + err.message +
+            '<br/>Asegúrate de abrir la app mediante iniciar_palantir.bat (servidor HTTP local).</span>';
+        }
+      })(KeplerGl, store);
+    </script>
+  </body>
+</html>

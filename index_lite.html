@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUSAT — Visor Técnico de Infraestructura, Energía & Red Vial</title>
+  
+  <!-- MapLibre GL JS -->
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  
+  <!-- Tipografía Técnica: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-panel: rgba(15, 23, 42, 0.95);
+      --border-color: rgba(51, 65, 85, 0.8);
+      --border-hover: rgba(100, 116, 139, 0.8);
+      --accent-blue: #38bdf8;
+      --accent-cyan: #0ea5e9;
+      --accent-green: #10b981;
+      --accent-road: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-main); font-family: 'Inter', sans-serif; color: var(--text-main); }
+
+    #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+    /* Corrección de colisión: Controles de navegación */
+    .maplibregl-ctrl-top-right {
+      top: 66px !important;
+      right: 16px !important;
+    }
+
+    .tech-panel {
+      background: var(--bg-panel);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Barra Superior */
+    #top-bar {
+      position: absolute;
+      top: 10px;
+      left: 16px;
+      right: 16px;
+      height: 46px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 20;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-tag {
+      background: #0284c7;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 1.2px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .brand-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.3px;
+    }
+
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .telemetry-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .telemetry-val {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    /* Panel Lateral de Controles */
+    #sidebar {
+      position: absolute;
+      top: 66px;
+      left: 16px;
+      width: 340px;
+      max-height: calc(100% - 80px);
+      border-radius: 6px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+    }
+
+    #sidebar.collapsed {
+      transform: translateX(-360px);
+    }
+
+    .sidebar-header {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+    }
+
+    .sidebar-body {
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-body::-webkit-scrollbar { width: 4px; }
+    .sidebar-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 2px; }
+
+    .control-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .block-header {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #7dd3fc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Tarjeta BBOX */
+    .bbox-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .bbox-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-reload {
+      background: #0284c7;
+      border: 1px solid #38bdf8;
+      color: #ffffff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-reload:hover { background: #0369a1; }
+    .btn-reload:active { transform: scale(0.98); }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 28px;
+      height: 15px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155;
+      transition: .2s;
+      border-radius: 16px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 11px;
+      width: 11px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+    input:checked + .slider { background-color: #0284c7; }
+    input:checked + .slider:before { transform: translateX(13px); }
+
+    /* Tarjetas de Capas Jerárquicas (Desplegables) */
+    .layer-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .layer-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .layer-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.02);
+      user-select: none;
+    }
+
+    .layer-title-area {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      flex-grow: 1;
+    }
+
+    .caret-btn {
+      font-size: 9px;
+      color: var(--accent-blue);
+      transition: transform 0.2s ease;
+      display: inline-block;
+      width: 12px;
+      text-align: center;
+    }
+
+    .caret-btn.open {
+      transform: rotate(90deg);
+    }
+
+    .layer-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .layer-dropdown {
+      padding: 8px 10px 10px 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .layer-dropdown.collapsed {
+      display: none;
+    }
+
+    .layer-dropdown.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .sub-filter-title {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Grid Combustibles */
+    .fuel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+
+    .fuel-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 5px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .fuel-btn.active {
+      background: rgba(2, 132, 199, 0.2);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    .fuel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Checkbox rows */
+    .sub-check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-main);
+      padding: 2px 0;
+    }
+
+    .sub-check-row input[type=checkbox] {
+      cursor: pointer;
+    }
+
+    .btn-sub-action {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fbbf24;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: background 0.15s;
+      margin-top: 2px;
+    }
+    .btn-sub-action:hover { background: rgba(245, 158, 11, 0.25); }
+
+    /* Opacity Slider */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      flex-grow: 1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #38bdf8;
+      cursor: pointer;
+    }
+
+    /* Leyenda de Suelo */
+    .landcover-legend {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      background: rgba(0,0,0,0.25);
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-box {
+      width: 8px;
+      height: 8px;
+      border-radius: 1px;
+    }
+
+    /* Botonera */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 5px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+    }
+
+    .btn-action:hover, .btn-action.active {
+      background: rgba(2, 132, 199, 0.25);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    /* Referencias Técnicas con Links Oficiales */
+    #references-box {
+      position: absolute;
+      bottom: 18px;
+      right: 16px;
+      border-radius: 6px;
+      padding: 10px 12px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 11px;
+      min-width: 270px;
+    }
+
+    .ref-header {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 2px;
+    }
+
+    .ref-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 2px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ref-item:last-child { border-bottom: none; }
+
+    .ref-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ref-link {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .ref-link:hover {
+      text-decoration: underline;
+      color: #7dd3fc;
+    }
+
+    /* Toggle Sidebar Button */
+    #btn-toggle-sidebar {
+      position: absolute;
+      bottom: 18px;
+      left: 16px;
+      z-index: 21;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    #btn-toggle-sidebar:hover { color: #fff; }
+
+    /* Popups Técnicas */
+    .maplibregl-popup-content {
+      background: rgba(15, 23, 42, 0.95) !important;
+      border: 1px solid #38bdf8 !important;
+      border-radius: 6px !important;
+      padding: 12px 14px !important;
+      color: #fff !important;
+      font-family: 'Inter', sans-serif !important;
+      min-width: 240px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7) !important;
+    }
+
+    .maplibregl-popup-close-button {
+      color: #94a3b8 !important;
+      font-size: 16px !important;
+      padding: 2px 6px !important;
+    }
+
+    .popup-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #38bdf8;
+    }
+
+    .popup-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3px 10px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .popup-lbl { color: var(--text-muted); }
+    .popup-val { text-align: right; font-weight: 600; color: #f1f5f9; }
+
+    /* Loading Técnico Sobrio */
+    #loading-screen {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #0b0f19;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid rgba(56, 189, 248, 0.2);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <!-- Loading Técnico Sobrio -->
+  <div id="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="load-msg">Iniciando LUSAT...</div>
+  </div>
+
+  <!-- Barra Superior -->
+  <div id="top-bar" class="tech-panel">
+    <div class="brand-group">
+      <span class="brand-tag">LUSAT</span>
+      <span class="brand-title">Infraestructura, Energía & Red Vial</span>
+    </div>
+    <div class="telemetry-bar">
+      <div class="telemetry-item">
+        <span>CENTRALES:</span>
+        <span class="telemetry-val" id="count-visible">0</span>
+        <span style="color:#64748b;">/ 34.936</span>
+      </div>
+      <div class="telemetry-item">
+        <span>POTENCIA:</span>
+        <span class="telemetry-val" id="mw-visible">0 MW</span>
+      </div>
+      <div class="telemetry-item">
+        <span>ESQUEMA POLÍTICO:</span>
+        <span class="telemetry-val" id="political-status" style="color:#10b981;">ACTIVO</span>
+      </div>
+      <div class="telemetry-item">
+        <span>FILTRO BBOX:</span>
+        <span class="telemetry-val" id="mode-status" style="color:#10b981;">ACTIVO</span>
+      </div>
+      <div class="telemetry-item">
+        <span>FPS:</span>
+        <span class="telemetry-val" id="fps-counter" style="color:#10b981;">60 FPS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Lateral -->
+  <div id="sidebar" class="tech-panel">
+    <div class="sidebar-header">
+      <span>Capas & Parámetros</span>
+      <span id="data-status" style="color:#38bdf8;">ONLINE</span>
+    </div>
+
+    <div class="sidebar-body">
+      
+      <!-- Control de Área Espacial (BBOX) -->
+      <div class="control-block">
+        <div class="block-header">
+          <span>Área Espacial (BBOX)</span>
+          <span style="font-size:10px; color:var(--text-muted);">Sin agrupamiento</span>
+        </div>
+        <div class="bbox-card">
+          <div class="bbox-row">
+            <span style="font-size:12px;">Limitar a zona visible</span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-bbox" checked onchange="toggleBboxMode(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <button class="btn-reload" id="btn-reload-zone" onclick="applySpatialAndFuelFilters()">
+            <span>🔄 Recargar datos para esta zona</span>
+          </button>
+          <div class="bbox-row" style="font-size:10px; color:var(--text-muted);">
+            <span>Auto-actualizar al mover mapa</span>
+            <input type="checkbox" id="toggle-auto-reload" checked style="cursor:pointer;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Capas Disponibles con Menús Desplegables Propios -->
+      <div class="control-block">
+        <div class="block-header">Capas Disponibles</div>
+
+        <!-- Capa 0: Esquema Político (Límites, Provincias y Ciudades) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('political')">
+              <span class="caret-btn open" id="caret-political">▶</span>
+              <span class="layer-name" style="color:#38bdf8;">🏛️ Esquema Político (Ciudades / Límites)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-political" checked onchange="toggleMasterPolitical(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown" id="dropdown-political">
+            <div class="sub-filter-title"><span>Elementos y Referencias:</span></div>
+            <div style="font-size:10.5px; color:var(--text-muted); line-height:1.4;">
+              • Nombres de Ciudades, Capitales y Pueblos<br>
+              • Límites internacionales de Países<br>
+              • Límites de Provincias y Estados
+            </div>
+            <div class="slider-row" style="margin-top:4px;">
+              <span>Opacidad:</span>
+              <input type="range" id="range-political-opacity" min="0" max="100" value="95" oninput="setPoliticalOpacity(this.value)" />
+              <span id="political-opacity-val" style="color:#38bdf8;">95%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 1: Centrales Eléctricas (WRI) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('plants')">
+              <span class="caret-btn open" id="caret-plants">▶</span>
+              <span class="layer-name" style="color:#f43f5e;">● Centrales Eléctricas (WRI)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-plants" checked onchange="toggleMasterPlants(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown" id="dropdown-plants">
+            <div class="sub-filter-title">
+              <span>Filtrar por Combustible:</span>
+              <div style="display:flex; gap:6px;">
+                <span style="cursor:pointer; color:#38bdf8;" onclick="setAllFuels(true)">Todos</span>
+                <span style="cursor:pointer; color:#94a3b8;" onclick="setAllFuels(false)">Ninguno</span>
+              </div>
+            </div>
+            <div class="fuel-grid">
+              <div class="fuel-btn active" data-fuel="Nuclear" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#f43f5e;"></span> Nuclear
+              </div>
+              <div class="fuel-btn active" data-fuel="Hydro" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#0284c7;"></span> Hidroeléctrica
+              </div>
+              <div class="fuel-btn active" data-fuel="Solar" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#eab308;"></span> Solar
+              </div>
+              <div class="fuel-btn active" data-fuel="Wind" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#10b981;"></span> Eólica
+              </div>
+              <div class="fuel-btn active" data-fuel="Gas" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#f97316;"></span> Gas Natural
+              </div>
+              <div class="fuel-btn active" data-fuel="Coal" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#64748b;"></span> Carbón
+              </div>
+              <div class="fuel-btn active" data-fuel="Oil" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#a855f7;"></span> Petróleo
+              </div>
+              <div class="fuel-btn active" data-fuel="Other" onclick="toggleFuelFilter(this)">
+                <span class="fuel-dot" style="background:#14b8a6;"></span> Otros / Bio
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 2: Infraestructura Vial Completa (Nac / Prov / Municipal / Rural) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('roads')">
+              <span class="caret-btn open" id="caret-roads">▶</span>
+              <span class="layer-name" style="color:#f59e0b;">🛣️ Red Vial (Nac / Prov / Rural)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-roads" checked onchange="toggleMasterRoads(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown" id="dropdown-roads">
+            <div class="sub-filter-title"><span>Jerarquía y Vías:</span></div>
+            <div class="sub-check-row">
+              <span><span style="color:#ef4444; font-weight:700;">━</span> Rutas Nacionales (Autovías/RN)</span>
+              <input type="checkbox" id="chk-roads-nat" checked onchange="applyRoadFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#f59e0b; font-weight:700;">━</span> Rutas Provinciales / Estaduales</span>
+              <input type="checkbox" id="chk-roads-prov" checked onchange="applyRoadFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#94a3b8;">━</span> Calles Municipales y Urbanas</span>
+              <input type="checkbox" id="chk-roads-mun" checked onchange="applyRoadFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#d97706; border-bottom:1px dashed #d97706;">┄</span> Caminos Rurales y Huellas</span>
+              <input type="checkbox" id="chk-roads-rural" checked onchange="applyRoadFilters()" />
+            </div>
+            <div class="slider-row" style="margin-top:4px;">
+              <span>Opacidad:</span>
+              <input type="range" id="range-roads-opacity" min="0" max="100" value="85" oninput="setRoadsOpacity(this.value)" />
+              <span id="roads-opacity-val" style="color:#f59e0b;">85%</span>
+            </div>
+            <button class="btn-sub-action" onclick="fetchLiveRuralRoads()">
+              <span>🚜 Cargar huellas rurales vectoriales en vivo</span>
+            </button>
+            <div id="rural-status" style="font-size:10px; color:var(--text-muted); text-align:center;">
+              (Haz zoom a nivel campo para descargar huellas locales)
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 3: Red de Alta Tensión (HIFLD USA + SADI / OSM) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('grid')">
+              <span class="caret-btn" id="caret-grid">▶</span>
+              <span class="layer-name" style="color:#facc15;">⚡ Red Alta Tensión (USA/Global)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-grid" checked onchange="toggleMasterGrid(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown collapsed" id="dropdown-grid">
+            <div class="sub-filter-title"><span>Niveles de Tensión:</span></div>
+            <div class="sub-check-row">
+              <span><span style="color:#facc15;">━</span> 500 kV+ Extra Alta Tensión</span>
+              <input type="checkbox" id="chk-volt-500" checked onchange="applyGridFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#fb923c;">━</span> 220 kV - 345 kV Alta Tensión</span>
+              <input type="checkbox" id="chk-volt-220" checked onchange="applyGridFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#38bdf8;">━</span> 110 kV - 132 kV Media / Alta</span>
+              <input type="checkbox" id="chk-volt-110" checked onchange="applyGridFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#ffffff;">●</span> Subestaciones y Puertos</span>
+              <input type="checkbox" id="chk-volt-sub" checked onchange="applyGridFilters()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 4: Ductos Críticos (GEM) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('gem')">
+              <span class="caret-btn" id="caret-gem">▶</span>
+              <span class="layer-name" style="color:#00e5ff;">━ Ductos Críticos (GEM)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-gem" checked onchange="toggleMasterGem(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown collapsed" id="dropdown-gem">
+            <div class="sub-filter-title"><span>Productos Transportados:</span></div>
+            <div class="sub-check-row">
+              <span><span style="color:#00e5ff;">━</span> Gasoductos de Gas Natural</span>
+              <input type="checkbox" id="chk-gem-gas" checked onchange="applyGemFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span style="color:#ff3366;">━</span> Oleoductos de Crudo</span>
+              <input type="checkbox" id="chk-gem-oil" checked onchange="applyGemFilters()" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 5: Cobertura de Suelo y Cultivos 10m (Sentinel-2 / Esri) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('landcover')">
+              <span class="caret-btn" id="caret-landcover">▶</span>
+              <span class="layer-name" style="color:#10b981;">🌱 Suelo y Cultivos 10m (Satélite)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-landcover" checked onchange="toggleMasterLandCover(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown collapsed" id="dropdown-landcover">
+            <div class="sub-filter-title">
+              <span>Opacidad de Teselas:</span>
+              <span id="opacity-val" style="color:#38bdf8;">65%</span>
+            </div>
+            <div class="slider-row">
+              <span>0%</span>
+              <input type="range" id="range-opacity" min="0" max="100" value="65" oninput="setLandCoverOpacity(this.value)" />
+              <span>100%</span>
+            </div>
+            <div class="sub-check-row" style="margin-top:4px;">
+              <span>Polígonos Estadísticos Nacionales</span>
+              <input type="checkbox" id="chk-esa-poly" checked onchange="toggleEsaPoly(this.checked)" />
+            </div>
+            <div class="landcover-legend">
+              <div class="legend-item"><span class="legend-box" style="background:#ffd300;"></span> Cultivos</div>
+              <div class="legend-item"><span class="legend-box" style="background:#397d49;"></span> Bosques</div>
+              <div class="legend-item"><span class="legend-box" style="background:#88b053;"></span> Pasturas</div>
+              <div class="legend-item"><span class="legend-box" style="background:#419bdf;"></span> Agua</div>
+              <div class="legend-item"><span class="legend-box" style="background:#c4281b;"></span> Urbano</div>
+              <div class="legend-item"><span class="legend-box" style="background:#a59b8f;"></span> Suelo Desnudo</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Mapas Base (100% Libres de Watermarks y sin API Key) -->
+      <div class="control-block">
+        <div class="block-header">Mapa Base (Sin Watermark)</div>
+        <div class="btn-grid">
+          <button class="btn-action active" id="btn-dark" onclick="setBaseMap('dark')">Oscuro</button>
+          <button class="btn-action" id="btn-sat" onclick="setBaseMap('satellite')">Satélite</button>
+          <button class="btn-action" id="btn-light" onclick="setBaseMap('light')">Claro</button>
+        </div>
+      </div>
+
+      <!-- Navegación Territorial -->
+      <div class="control-block">
+        <div class="block-header">Navegación Territorial</div>
+        <div class="btn-grid">
+          <button class="btn-action" onclick="flyToLocation('arg')">Argentina</button>
+          <button class="btn-action" onclick="flyToLocation('latam')">Sudamérica</button>
+          <button class="btn-action" onclick="flyToLocation('na')">Norteamérica</button>
+          <button class="btn-action" onclick="flyToLocation('eu')">Europa</button>
+          <button class="btn-action" onclick="flyToLocation('asia')">Asia</button>
+          <button class="btn-action" onclick="flyToLocation('world')">Global</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Botón colapsar Sidebar -->
+  <div id="btn-toggle-sidebar" class="tech-panel" onclick="toggleSidebar()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </div>
+
+  <!-- Panel de Referencias Técnicas -->
+  <div id="references-box" class="tech-panel">
+    <div class="ref-header">FUENTES TÉCNICAS & ORGANIZACIONES</div>
+    
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:8px; height:8px; background:#38bdf8; border-radius:2px;"></span>
+        <span>Esquema Político & Ciudades</span>
+      </div>
+      <a class="ref-link" href="https://www.arcgis.com/home/item.html?id=30d6bed8d34947908a738ea674218381" target="_blank" rel="noopener noreferrer">
+        Esri Reference ↗
+      </a>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:10px; height:3px; background:#f59e0b; border-radius:1px;"></span>
+        <span>Red Vial (DNV / Esri / OSM)</span>
+      </div>
+      <a class="ref-link" href="https://www.argentina.gob.ar/vialidad-nacional" target="_blank" rel="noopener noreferrer">
+        Vialidad Nac. ↗
+      </a>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#f43f5e;"></span>
+        <span>Centrales Eléctricas</span>
+      </div>
+      <a class="ref-link" href="https://www.wri.org/research/global-power-plant-database" target="_blank" rel="noopener noreferrer">
+        WRI Database ↗
+      </a>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:10px; height:3px; background:#facc15; border-radius:1px;"></span>
+        <span>Red Eléctrica USA (HIFLD)</span>
+      </div>
+      <a class="ref-link" href="https://hifld-geoplatform.opendata.arcgis.com/" target="_blank" rel="noopener noreferrer">
+        DHS / DOE ↗
+      </a>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:10px; height:3px; background:#00e5ff; border-radius:1px;"></span>
+        <span>Ductos e Infraestructura</span>
+      </div>
+      <a class="ref-link" href="https://globalenergymonitor.org/" target="_blank" rel="noopener noreferrer">
+        GEM Tracker ↗
+      </a>
+    </div>
+
+    <div class="ref-item">
+      <div class="ref-label">
+        <span style="display:inline-block; width:7px; height:7px; background:#10b981; border-radius:2px;"></span>
+        <span>Suelo y Cultivos 10m</span>
+      </div>
+      <a class="ref-link" href="https://livingatlas.arcgis.com/landcoverexplorer/" target="_blank" rel="noopener noreferrer">
+        Sentinel-2 10m ↗
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Configuración de Mapas Base y Esquemas Políticos (100% Libres de API Key y Sin Watermark)
+    const BASEMAPS = {
+      dark: {
+        base: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        reference: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+      },
+      satellite: {
+        base: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        reference: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
+      },
+      light: {
+        base: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        reference: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+      }
+    };
+
+    let activeBase = 'dark';
+    let rawPowerPlants = [];
+    let isBboxActive = true;
+    let isPlantsLayerVisible = true;
+    let isRoadsMasterVisible = true;
+    let isPoliticalMasterVisible = true;
+    let activeFuels = new Set(['Nuclear', 'Hydro', 'Solar', 'Wind', 'Gas', 'Coal', 'Oil', 'Other']);
+
+    // Inicializar Mapa MapLibre
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          'base-raster-src': {
+            type: 'raster',
+            tiles: [BASEMAPS.dark.base],
+            tileSize: 256,
+            attribution: '&copy; Esri, HERE, Garmin, OpenStreetMap'
+          },
+          'political-ref-src': {
+            type: 'raster',
+            tiles: [BASEMAPS.dark.reference],
+            tileSize: 256,
+            attribution: '&copy; Esri, DeLorme'
+          }
+        },
+        layers: [
+          {
+            id: 'base-raster',
+            type: 'raster',
+            source: 'base-raster-src',
+            minzoom: 0,
+            maxzoom: 19
+          }
+        ]
+      },
+      center: [-64.0, -34.0], // Argentina / Sudamérica
+      zoom: 4.5,
+      pitch: 0,
+      bearing: 0,
+      antialias: true
+    });
+
+    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+
+    // FPS Telemetry
+    let frames = 0, lastFpsCheck = performance.now();
+    function tickFps() {
+      frames++;
+      const now = performance.now();
+      if (now - lastFpsCheck >= 1000) {
+        document.getElementById('fps-counter').innerText = frames + ' FPS';
+        frames = 0;
+        lastFpsCheck = now;
+      }
+      requestAnimationFrame(tickFps);
+    }
+    requestAnimationFrame(tickFps);
+
+    // Carga de Capas
+    map.on('load', async () => {
+      const loadMsg = document.getElementById('load-msg');
+
+      try {
+        // 1. Suelo y Cultivos 10m (Sentinel-2 / Esri)
+        loadMsg.innerText = 'Cargando Suelo y Cultivos 10m Sentinel-2...';
+        map.addSource('sentinel2-landcover', {
+          type: 'raster',
+          tiles: [
+            'https://ic.imagery1.arcgis.com/arcgis/rest/services/Sentinel2_10m_LandCover/ImageServer/exportImage?bbox={bbox-epsg-3857}&bboxSR=3857&size=256,256&imageSR=3857&format=png32&f=image'
+          ],
+          tileSize: 256,
+          attribution: '&copy; Impact Observatory, Esri, Microsoft'
+        });
+
+        map.addLayer({
+          id: 'landcover-layer',
+          type: 'raster',
+          source: 'sentinel2-landcover',
+          paint: {
+            'raster-opacity': 0.65
+          }
+        });
+
+        // 2. Malla Vial Completa: Calles Municipales, Urbanas y Caminos Rurales (Overlay Esri World Transportation)
+        loadMsg.innerText = 'Cargando Malla Vial y Caminos Rurales...';
+        map.addSource('transport-roads-overlay', {
+          type: 'raster',
+          tiles: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
+          ],
+          tileSize: 256,
+          attribution: '&copy; Esri, HERE, Garmin, OpenStreetMap'
+        });
+
+        map.addLayer({
+          id: 'roads-raster-overlay',
+          type: 'raster',
+          source: 'transport-roads-overlay',
+          paint: {
+            'raster-opacity': 0.85
+          }
+        });
+
+        // 3. Esquema Político: Ciudades, Provincias y Límites Internacionales (Reference Overlay)
+        map.addLayer({
+          id: 'political-reference-layer',
+          type: 'raster',
+          source: 'political-ref-src',
+          paint: {
+            'raster-opacity': 0.95
+          }
+        });
+
+        // 4. Red Troncal Vectorial: Rutas Nacionales y Provinciales (GeoJSON)
+        map.addSource('highways-vector', {
+          type: 'geojson',
+          data: 'datasets/road_network_highways.geojson'
+        });
+
+        map.addLayer({
+          id: 'roads-vector-line',
+          type: 'line',
+          source: 'highways-vector',
+          paint: {
+            'line-color': [
+              'match', ['get', 'cat'],
+              'Ruta Nacional', '#ef4444',
+              'Ruta Provincial', '#f59e0b',
+              '#94a3b8'
+            ],
+            'line-width': [
+              'match', ['get', 'cat'],
+              'Ruta Nacional', 2.6,
+              'Ruta Provincial', 1.8,
+              1.2
+            ],
+            'line-opacity': 0.9
+          }
+        });
+
+        // 5. Capa Dinámica para Caminos Rurales y Huellas Locales (Overpass BBOX)
+        map.addSource('rural-roads-dynamic', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] }
+        });
+
+        map.addLayer({
+          id: 'rural-roads-line',
+          type: 'line',
+          source: 'rural-roads-dynamic',
+          paint: {
+            'line-color': '#fbbf24',
+            'line-width': 1.6,
+            'line-dasharray': [3, 2],
+            'line-opacity': 0.85
+          }
+        });
+
+        // 6. Polígonos Estadísticos Nacionales ESA WorldCover
+        map.addSource('esa-crops', {
+          type: 'geojson',
+          data: 'datasets/esa_worldcover_agricultural_crops.geojson'
+        });
+
+        map.addLayer({
+          id: 'esa-fill',
+          type: 'fill',
+          source: 'esa-crops',
+          paint: {
+            'fill-color': '#10b981',
+            'fill-opacity': 0.08
+          }
+        });
+
+        map.addLayer({
+          id: 'esa-line',
+          type: 'line',
+          source: 'esa-crops',
+          paint: {
+            'line-color': '#34d399',
+            'line-width': 1,
+            'line-opacity': 0.25
+          }
+        });
+
+        // 7. Ductos Críticos GEM
+        map.addSource('gem-pipelines', {
+          type: 'geojson',
+          data: 'datasets/gem_pipelines_lite.geojson'
+        });
+
+        map.addLayer({
+          id: 'gem-lines',
+          type: 'line',
+          source: 'gem-pipelines',
+          paint: {
+            'line-color': [
+              'case',
+              ['in', 'Gas', ['get', 'product']], '#00e5ff',
+              ['in', 'Oil', ['get', 'product']], '#ff3366',
+              '#a855f7'
+            ],
+            'line-width': 2,
+            'line-opacity': 0.85
+          }
+        });
+
+        // 8. Red Alta Tensión OSM + HIFLD USA (17.369 infraestructuras)
+        loadMsg.innerText = 'Cargando Red de Alta Tensión (USA + Mercosur)...';
+        map.addSource('osm-grid', {
+          type: 'geojson',
+          data: 'datasets/osm_power_grid_lite.geojson'
+        });
+
+        map.addLayer({
+          id: 'osm-lines',
+          type: 'line',
+          source: 'osm-grid',
+          filter: ['==', '$type', 'LineString'],
+          paint: {
+            'line-color': [
+              'match', ['get', 'volt'],
+              '500 kV', '#facc15',
+              '220 kV', '#fb923c',
+              '132 kV', '#38bdf8',
+              '110 kV', '#38bdf8',
+              '#64748b'
+            ],
+            'line-width': 1.8,
+            'line-opacity': 0.75
+          }
+        });
+
+        map.addLayer({
+          id: 'osm-points',
+          type: 'circle',
+          source: 'osm-grid',
+          filter: ['==', '$type', 'Point'],
+          paint: {
+            'circle-radius': 3.5,
+            'circle-color': '#facc15',
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ffffff'
+          }
+        });
+
+        // 9. Centrales Eléctricas WRI (34.936 puntos individuales sin clusters)
+        loadMsg.innerText = 'Cargando 34.936 centrales eléctricas globales...';
+        const res = await fetch('datasets/power_plants_lite.geojson');
+        const data = await res.json();
+        rawPowerPlants = data.features || [];
+
+        rawPowerPlants.forEach(f => {
+          let fuel = f.properties.fuel || 'Other';
+          if (!['Nuclear', 'Hydro', 'Solar', 'Wind', 'Gas', 'Coal', 'Oil'].includes(fuel)) {
+            f.properties.fuel = 'Other';
+          }
+        });
+
+        map.addSource('power-plants', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] }
+        });
+
+        map.addLayer({
+          id: 'plants-layer',
+          type: 'circle',
+          source: 'power-plants',
+          paint: {
+            'circle-color': [
+              'match', ['get', 'fuel'],
+              'Nuclear', '#f43f5e',
+              'Hydro', '#0284c7',
+              'Solar', '#eab308',
+              'Wind', '#10b981',
+              'Gas', '#f97316',
+              'Coal', '#64748b',
+              'Oil', '#a855f7',
+              '#14b8a6'
+            ],
+            'circle-radius': [
+              'interpolate', ['linear'], ['get', 'capacity_mw'],
+              0, 3.5,
+              100, 5,
+              1000, 7.5,
+              4000, 13
+            ],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ffffff',
+            'circle-stroke-opacity': 0.7
+          }
+        });
+
+        // Popups
+        setupPopups();
+
+        // Aplicar BBOX y filtros
+        applySpatialAndFuelFilters();
+
+        map.on('moveend', () => {
+          const autoReload = document.getElementById('toggle-auto-reload').checked;
+          if (isBboxActive && autoReload) {
+            applySpatialAndFuelFilters();
+          }
+        });
+
+        // Ocultar pantalla de carga
+        const loadScreen = document.getElementById('loading-screen');
+        loadScreen.style.opacity = '0';
+        setTimeout(() => loadScreen.style.display = 'none', 300);
+
+      } catch (err) {
+        console.error(err);
+        loadMsg.innerText = 'Error al cargar capas: ' + err.message;
+      }
+    });
+
+    // Control de Acordeones / Desplegables por Capa
+    function toggleDropdown(layerKey) {
+      const dd = document.getElementById('dropdown-' + layerKey);
+      const caret = document.getElementById('caret-' + layerKey);
+      if (!dd) return;
+
+      const isCollapsed = dd.classList.contains('collapsed');
+      if (isCollapsed) {
+        dd.classList.remove('collapsed');
+        if (caret) caret.classList.add('open');
+      } else {
+        dd.classList.add('collapsed');
+        if (caret) caret.classList.remove('open');
+      }
+    }
+
+    // Toggle Maestro de Esquema Político (Ciudades y Límites)
+    function toggleMasterPolitical(enabled) {
+      isPoliticalMasterVisible = enabled;
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('political-reference-layer')) {
+        map.setLayoutProperty('political-reference-layer', 'visibility', v);
+      }
+      const dd = document.getElementById('dropdown-political');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+      document.getElementById('political-status').innerText = enabled ? 'ACTIVO' : 'INACTIVO';
+      document.getElementById('political-status').style.color = enabled ? '#10b981' : '#f59e0b';
+    }
+
+    function setPoliticalOpacity(val) {
+      const opacity = parseFloat(val) / 100;
+      document.getElementById('political-opacity-val').innerText = val + '%';
+      if (map.getLayer('political-reference-layer')) {
+        map.setPaintProperty('political-reference-layer', 'raster-opacity', opacity);
+      }
+    }
+
+    // Toggle Maestro de Red Vial
+    function toggleMasterRoads(enabled) {
+      isRoadsMasterVisible = enabled;
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('roads-vector-line')) map.setLayoutProperty('roads-vector-line', 'visibility', v);
+      if (map.getLayer('roads-raster-overlay')) map.setLayoutProperty('roads-raster-overlay', 'visibility', v);
+      if (map.getLayer('rural-roads-line')) map.setLayoutProperty('rural-roads-line', 'visibility', v);
+
+      const dd = document.getElementById('dropdown-roads');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+    }
+
+    function applyRoadFilters() {
+      const fNat = document.getElementById('chk-roads-nat').checked;
+      const fProv = document.getElementById('chk-roads-prov').checked;
+      const fMun = document.getElementById('chk-roads-mun').checked;
+      const fRural = document.getElementById('chk-roads-rural').checked;
+
+      const allowedCats = [];
+      if (fNat) allowedCats.push('Ruta Nacional');
+      if (fProv) allowedCats.push('Ruta Provincial');
+
+      if (map.getLayer('roads-vector-line')) {
+        map.setFilter('roads-vector-line', ['in', ['get', 'cat'], ['literal', allowedCats]]);
+      }
+
+      if (map.getLayer('roads-raster-overlay')) {
+        map.setLayoutProperty('roads-raster-overlay', 'visibility', (fMun || fRural) ? 'visible' : 'none');
+      }
+    }
+
+    function setRoadsOpacity(val) {
+      const opacity = parseFloat(val) / 100;
+      document.getElementById('roads-opacity-val').innerText = val + '%';
+      if (map.getLayer('roads-raster-overlay')) {
+        map.setPaintProperty('roads-raster-overlay', 'raster-opacity', opacity);
+      }
+    }
+
+    // Descarga en Vivo de Caminos Rurales y Huellas Locales (Overpass API BBOX)
+    async function fetchLiveRuralRoads() {
+      const statusEl = document.getElementById('rural-status');
+      const zoom = map.getZoom();
+
+      if (zoom < 10) {
+        statusEl.innerText = '⚠️ Haz zoom a nivel campo (zoom >= 10) para no saturar el servidor';
+        statusEl.style.color = '#f59e0b';
+        return;
+      }
+
+      const b = map.getBounds();
+      const s = b.getSouth().toFixed(4);
+      const w = b.getWest().toFixed(4);
+      const n = b.getNorth().toFixed(4);
+      const e = b.getEast().toFixed(4);
+
+      statusEl.innerText = 'Consultando caminos rurales y huellas a OSM...';
+      statusEl.style.color = '#38bdf8';
+
+      const overpassQuery = `[out:json][timeout:15];(way["highway"~"track|unclassified|path|service"](${s},${w},${n},${e}););out geom 800;`;
+      const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+
+      try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+        const elems = data.elements || [];
+
+        const features = [];
+        elems.forEach(el => {
+          if (el.geometry && el.geometry.length > 1) {
+            const coords = el.geometry.map(pt => [pt.lon, pt.lat]);
+            features.push({
+              type: 'Feature',
+              geometry: { type: 'LineString', coordinates: coords },
+              properties: {
+                name: el.tags?.name || 'Camino Rural / Huella',
+                surface: el.tags?.surface || 'Tierra / Ripio',
+                hwy: el.tags?.highway || 'track',
+                access: el.tags?.access || 'Público/Rural'
+              }
+            });
+          }
+        });
+
+        const src = map.getSource('rural-roads-dynamic');
+        if (src) {
+          src.setData({ type: 'FeatureCollection', features: features });
+        }
+
+        statusEl.innerText = `✓ ${features.length} caminos rurales y huellas cargados en la zona!`;
+        statusEl.style.color = '#10b981';
+
+      } catch (err) {
+        console.error(err);
+        statusEl.innerText = 'Error al consultar caminos rurales: ' + err.message;
+        statusEl.style.color = '#ef4444';
+      }
+    }
+
+    // Toggle Maestro de Centrales Eléctricas
+    function toggleMasterPlants(enabled) {
+      isPlantsLayerVisible = enabled;
+      if (map.getLayer('plants-layer')) {
+        map.setLayoutProperty('plants-layer', 'visibility', enabled ? 'visible' : 'none');
+      }
+      const dd = document.getElementById('dropdown-plants');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+    }
+
+    // Toggle Maestro de Red de Alta Tensión
+    function toggleMasterGrid(enabled) {
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('osm-lines')) map.setLayoutProperty('osm-lines', 'visibility', v);
+      if (map.getLayer('osm-points')) map.setLayoutProperty('osm-points', 'visibility', v);
+      
+      const dd = document.getElementById('dropdown-grid');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+    }
+
+    // Toggle Maestro de Ductos GEM
+    function toggleMasterGem(enabled) {
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('gem-lines')) map.setLayoutProperty('gem-lines', 'visibility', v);
+      
+      const dd = document.getElementById('dropdown-gem');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+    }
+
+    // Toggle Maestro de Suelo 10m
+    function toggleMasterLandCover(enabled) {
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('landcover-layer')) map.setLayoutProperty('landcover-layer', 'visibility', v);
+      if (map.getLayer('esa-fill')) map.setLayoutProperty('esa-fill', 'visibility', v);
+      if (map.getLayer('esa-line')) map.setLayoutProperty('esa-line', 'visibility', v);
+
+      const dd = document.getElementById('dropdown-landcover');
+      if (enabled) {
+        dd.classList.remove('disabled');
+      } else {
+        dd.classList.add('disabled');
+      }
+    }
+
+    // Sub-filtro de Red Alta Tensión por Voltaje
+    function applyGridFilters() {
+      const f500 = document.getElementById('chk-volt-500').checked;
+      const f220 = document.getElementById('chk-volt-220').checked;
+      const f110 = document.getElementById('chk-volt-110').checked;
+      const fSub = document.getElementById('chk-volt-sub').checked;
+
+      const allowedVolts = [];
+      if (f500) allowedVolts.push('500 kV');
+      if (f220) allowedVolts.push('220 kV');
+      if (f110) { allowedVolts.push('110 kV'); allowedVolts.push('132 kV'); }
+
+      if (map.getLayer('osm-lines')) {
+        map.setFilter('osm-lines', ['all', ['==', '$type', 'LineString'], ['in', ['get', 'volt'], ['literal', allowedVolts]]]);
+      }
+      if (map.getLayer('osm-points')) {
+        map.setLayoutProperty('osm-points', 'visibility', fSub ? 'visible' : 'none');
+      }
+    }
+
+    // Sub-filtro de Ductos GEM
+    function applyGemFilters() {
+      const fGas = document.getElementById('chk-gem-gas').checked;
+      const fOil = document.getElementById('chk-gem-oil').checked;
+
+      let conds = ['any'];
+      if (fGas) conds.push(['in', 'Gas', ['get', 'product']]);
+      if (fOil) conds.push(['in', 'Oil', ['get', 'product']]);
+
+      if (!fGas && !fOil) {
+        map.setLayoutProperty('gem-lines', 'visibility', 'none');
+      } else {
+        map.setLayoutProperty('gem-lines', 'visibility', 'visible');
+        map.setFilter('gem-lines', conds);
+      }
+    }
+
+    // Opacidad de Suelo 10m
+    function setLandCoverOpacity(val) {
+      const opacity = parseFloat(val) / 100;
+      document.getElementById('opacity-val').innerText = val + '%';
+      if (map.getLayer('landcover-layer')) {
+        map.setPaintProperty('landcover-layer', 'raster-opacity', opacity);
+      }
+    }
+
+    function toggleEsaPoly(enabled) {
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('esa-fill')) map.setLayoutProperty('esa-fill', 'visibility', v);
+      if (map.getLayer('esa-line')) map.setLayoutProperty('esa-line', 'visibility', v);
+    }
+
+    // Filtrado Espacial (BBOX) y por Combustible
+    function applySpatialAndFuelFilters() {
+      if (!rawPowerPlants || rawPowerPlants.length === 0) return;
+
+      let bounds = null;
+      if (isBboxActive) {
+        bounds = map.getBounds();
+      }
+
+      const west = bounds ? bounds.getWest() : -180;
+      const south = bounds ? bounds.getSouth() : -90;
+      const east = bounds ? bounds.getEast() : 180;
+      const north = bounds ? bounds.getNorth() : 90;
+
+      let totalMw = 0;
+      const filtered = [];
+
+      for (let i = 0; i < rawPowerPlants.length; i++) {
+        const feat = rawPowerPlants[i];
+        const fuel = feat.properties.fuel || 'Other';
+
+        if (!activeFuels.has(fuel)) continue;
+
+        if (isBboxActive) {
+          const [lon, lat] = feat.geometry.coordinates;
+          if (lon < west || lon > east || lat < south || lat > north) {
+            continue;
+          }
+        }
+
+        filtered.push(feat);
+        totalMw += (feat.properties.capacity_mw || 0);
+      }
+
+      const source = map.getSource('power-plants');
+      if (source) {
+        source.setData({
+          type: 'FeatureCollection',
+          features: filtered
+        });
+      }
+
+      document.getElementById('count-visible').innerText = filtered.length.toLocaleString();
+      document.getElementById('mw-visible').innerText = Math.round(totalMw).toLocaleString() + ' MW';
+    }
+
+    function toggleBboxMode(active) {
+      isBboxActive = active;
+      const statusEl = document.getElementById('mode-status');
+      if (active) {
+        statusEl.innerText = 'ACTIVO';
+        statusEl.style.color = '#10b981';
+      } else {
+        statusEl.innerText = 'GLOBAL';
+        statusEl.style.color = '#f59e0b';
+      }
+      applySpatialAndFuelFilters();
+    }
+
+    function toggleFuelFilter(btn) {
+      const fuel = btn.getAttribute('data-fuel');
+      if (activeFuels.has(fuel)) {
+        activeFuels.delete(fuel);
+        btn.classList.remove('active');
+      } else {
+        activeFuels.add(fuel);
+        btn.classList.add('active');
+      }
+      applySpatialAndFuelFilters();
+    }
+
+    function setAllFuels(enable) {
+      const allFuelsList = ['Nuclear', 'Hydro', 'Solar', 'Wind', 'Gas', 'Coal', 'Oil', 'Other'];
+      document.querySelectorAll('.fuel-btn').forEach(btn => {
+        if (enable) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (enable) {
+        activeFuels = new Set(allFuelsList);
+      } else {
+        activeFuels.clear();
+      }
+      applySpatialAndFuelFilters();
+    }
+
+    // Switcher Mapa Base Libre de Watermarks
+    function setBaseMap(type) {
+      if (type === activeBase) return;
+      activeBase = type;
+
+      document.querySelectorAll('.btn-action').forEach(b => {
+        if (['btn-dark', 'btn-sat', 'btn-light'].includes(b.id)) b.classList.remove('active');
+      });
+      document.getElementById('btn-' + (type === 'satellite' ? 'sat' : type)).classList.add('active');
+
+      const targetBase = BASEMAPS[type].base;
+      const targetRef = BASEMAPS[type].reference;
+      
+      // Actualizar Base
+      if (map.getSource('base-raster-src')) {
+        map.removeLayer('base-raster');
+        map.removeSource('base-raster-src');
+      }
+      map.addSource('base-raster-src', {
+        type: 'raster',
+        tiles: [targetBase],
+        tileSize: 256,
+        attribution: '&copy; Esri'
+      });
+      const firstLayerId = map.getStyle().layers[0]?.id;
+      map.addLayer({
+        id: 'base-raster',
+        type: 'raster',
+        source: 'base-raster-src',
+        minzoom: 0,
+        maxzoom: 19
+      }, firstLayerId);
+
+      // Actualizar Referencia Política
+      if (map.getSource('political-ref-src')) {
+        if (map.getLayer('political-reference-layer')) map.removeLayer('political-reference-layer');
+        map.removeSource('political-ref-src');
+      }
+      map.addSource('political-ref-src', {
+        type: 'raster',
+        tiles: [targetRef],
+        tileSize: 256,
+        attribution: '&copy; Esri'
+      });
+      map.addLayer({
+        id: 'political-reference-layer',
+        type: 'raster',
+        source: 'political-ref-src',
+        minzoom: 0,
+        maxzoom: 19,
+        paint: {
+          'raster-opacity': parseFloat(document.getElementById('range-political-opacity').value) / 100
+        }
+      }, 'roads-vector-line');
+    }
+
+    // Bookmarks de Ubicación
+    function flyToLocation(loc) {
+      const locations = {
+        arg: { center: [-64.0, -34.5], zoom: 4.8 },
+        latam: { center: [-60.0, -20.0], zoom: 3.5 },
+        na: { center: [-98.0, 39.0], zoom: 3.8 },
+        eu: { center: [14.0, 50.0], zoom: 4.2 },
+        asia: { center: [100.0, 32.0], zoom: 3.5 },
+        world: { center: [0, 20], zoom: 2.0 }
+      };
+      if (locations[loc]) {
+        map.flyTo({
+          ...locations[loc],
+          duration: 1200,
+          essential: true
+        });
+      }
+    }
+
+    // Configurar Popups al hacer clic
+    function setupPopups() {
+      // Rutas Vectoriales
+      map.on('click', 'roads-vector-line', (e) => {
+        const p = e.features[0].properties;
+        const html = `
+          <div class="popup-title" style="color:#f59e0b;">🛣️ ${p.name || 'Ruta'}</div>
+          <div class="popup-grid">
+            <span class="popup-lbl">Código / Ref:</span><span class="popup-val" style="color:#ef4444;">${p.ref}</span>
+            <span class="popup-lbl">Jurisdicción:</span><span class="popup-val">${p.cat}</span>
+            <span class="popup-lbl">Superficie:</span><span class="popup-val">${p.surface}</span>
+            <span class="popup-lbl">Carriles:</span><span class="popup-val">${p.lanes}</span>
+          </div>
+        `;
+        new maplibregl.Popup({ offset: 6 }).setLngLat(e.lngLat).setHTML(html).addTo(map);
+      });
+
+      // Caminos Rurales Dinámicos
+      map.on('click', 'rural-roads-line', (e) => {
+        const p = e.features[0].properties;
+        const html = `
+          <div class="popup-title" style="color:#fbbf24;">🚜 ${p.name || 'Camino Rural'}</div>
+          <div class="popup-grid">
+            <span class="popup-lbl">Tipo de Vía:</span><span class="popup-val">${p.hwy}</span>
+            <span class="popup-lbl">Superficie:</span><span class="popup-val">${p.surface}</span>
+            <span class="popup-lbl">Acceso:</span><span class="popup-val">${p.access}</span>
+          </div>
+        `;
+        new maplibregl.Popup({ offset: 6 }).setLngLat(e.lngLat).setHTML(html).addTo(map);
+      });
+
+      // Centrales
+      map.on('click', 'plants-layer', (e) => {
+        const p = e.features[0].properties;
+        const coords = e.features[0].geometry.coordinates.slice();
+        
+        const html = `
+          <div class="popup-title">⚡ ${p.name || 'Central Eléctrica'}</div>
+          <div class="popup-grid">
+            <span class="popup-lbl">País:</span><span class="popup-val">${p.country || 'N/A'}</span>
+            <span class="popup-lbl">Combustible:</span><span class="popup-val" style="color:#38bdf8;">${p.fuel}</span>
+            <span class="popup-lbl">Potencia:</span><span class="popup-val">${Number(p.capacity_mw).toLocaleString()} MW</span>
+            <span class="popup-lbl">Gen. Histórica:</span><span class="popup-val">${Number(p.gen_gwh).toLocaleString()} GWh</span>
+            <span class="popup-lbl">Coordenadas:</span><span class="popup-val">${coords[1].toFixed(3)}, ${coords[0].toFixed(3)}</span>
+          </div>
+        `;
+        new maplibregl.Popup({ offset: 8 }).setLngLat(coords).setHTML(html).addTo(map);
+      });
+
+      // Ductos GEM
+      map.on('click', 'gem-lines', (e) => {
+        const p = e.features[0].properties;
+        const html = `
+          <div class="popup-title" style="color:#00e5ff;">━ ${p.name || 'Ducto Troncal'}</div>
+          <div class="popup-grid">
+            <span class="popup-lbl">Producto:</span><span class="popup-val">${p.product || 'Hidrocarburos'}</span>
+            <span class="popup-lbl">Longitud:</span><span class="popup-val">${p.length_km ? p.length_km + ' km' : 'N/A'}</span>
+            <span class="popup-lbl">Capacidad:</span><span class="popup-val">${p.capacity || 'N/A'}</span>
+            <span class="popup-lbl">Tipo:</span><span class="popup-val">${p.type || 'Troncal'}</span>
+          </div>
+        `;
+        new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
+      });
+
+      // Red OSM
+      map.on('click', 'osm-lines', (e) => {
+        const p = e.features[0].properties;
+        const html = `
+          <div class="popup-title" style="color:#facc15;">⚡ ${p.name || p.cat}</div>
+          <div class="popup-grid">
+            <span class="popup-lbl">Categoría:</span><span class="popup-val">${p.cat || 'N/A'}</span>
+            <span class="popup-lbl">Tensión:</span><span class="popup-val">${p.volt || 'N/A'}</span>
+            <span class="popup-lbl">Infraestructura:</span><span class="popup-val">${p.infra || 'N/A'}</span>
+          </div>
+        `;
+        new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
+      });
+
+      ['plants-layer', 'gem-lines', 'osm-lines', 'roads-vector-line', 'rural-roads-line'].forEach(layer => {
+        map.on('mouseenter', layer, () => { map.getCanvas().style.cursor = 'pointer'; });
+        map.on('mouseleave', layer, () => { map.getCanvas().style.cursor = ''; });
+      });
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+  </script>
+</body>
+</html>

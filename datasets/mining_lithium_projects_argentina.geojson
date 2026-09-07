@@ -1,0 +1,1317 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.76,
+          -23.74
+        ]
+      },
+      "properties": {
+        "nombre": "Cauchari-Olaroz",
+        "empresa": "MINERA EXAR S.A.",
+        "mineral": "Litio",
+        "estado": "Construcción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.61,
+          -27.35
+        ]
+      },
+      "properties": {
+        "nombre": "Bajo La Alumbrera",
+        "empresa": "MINERA ALUMBRERA LIMITED",
+        "mineral": "Cobre",
+        "estado": "Mantenimiento"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.156,
+          -25.072
+        ]
+      },
+      "properties": {
+        "nombre": "Río Grande",
+        "empresa": "LITHEA INC. SUCURSAL ARGENTINA",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.83,
+          -42.44
+        ]
+      },
+      "properties": {
+        "nombre": "Navidad",
+        "empresa": "MINERA ARGENTA S.A.",
+        "mineral": "Plata",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.1,
+          -25.49
+        ]
+      },
+      "properties": {
+        "nombre": "Fenix",
+        "empresa": "MINERA DEL ALTIPLANO S.A.",
+        "mineral": "Litio",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.68,
+          -27.31
+        ]
+      },
+      "properties": {
+        "nombre": "Farallón Negro",
+        "empresa": "YACIMIENTOS MINEROS DE AGUA DE DIONISIO (YMAD)",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.53,
+          -22.71
+        ]
+      },
+      "properties": {
+        "nombre": "Chinchillas-Pirquitas",
+        "empresa": "Puna Operations Inc",
+        "mineral": "Plata",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.3,
+          -24.81
+        ]
+      },
+      "properties": {
+        "nombre": "Mariana",
+        "empresa": "Mariana Lithium Co. Ltd.",
+        "mineral": "Litio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.56,
+          -32
+        ]
+      },
+      "properties": {
+        "nombre": "Cerro Blanco",
+        "empresa": "Argentina Mining Limited",
+        "mineral": "Cobre",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.69,
+          -43.41
+        ]
+      },
+      "properties": {
+        "nombre": "Meseta Central",
+        "empresa": "Ur América Ltd.",
+        "mineral": "Uranio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.4848,
+          -36.985
+        ]
+      },
+      "properties": {
+        "nombre": "Potasio Río Colorado",
+        "empresa": "Potasio Río Colorado S.A.",
+        "mineral": "Potasio",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.67,
+          -43.91
+        ]
+      },
+      "properties": {
+        "nombre": "Laguna Colorada",
+        "empresa": "CNEA",
+        "mineral": "Uranio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.56,
+          -48.17
+        ]
+      },
+      "properties": {
+        "nombre": "Pingüino",
+        "empresa": "Austral Gold",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.63,
+          -37.18
+        ]
+      },
+      "properties": {
+        "nombre": "Andacollo",
+        "empresa": "TRIDENT SOUTHERN EXPLORATIONS DE ARGENTINA S.R.L.",
+        "mineral": "Oro",
+        "estado": "Construcción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -65.796,
+          -40.78
+        ]
+      },
+      "properties": {
+        "nombre": "San Roque",
+        "empresa": "Marifil S.A",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.95,
+          -29.37
+        ]
+      },
+      "properties": {
+        "nombre": "Veladero",
+        "empresa": "MINERA ARGENTINA GOLD S.R.L",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.64,
+          -29.71
+        ]
+      },
+      "properties": {
+        "nombre": "Gualcamayo",
+        "empresa": "MINAS ARGENTINAS S.A.",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.63,
+          -31.19
+        ]
+      },
+      "properties": {
+        "nombre": "Casposo",
+        "empresa": "TROY RESOURCES ARGENTINA LTD (EX. INTREPID)",
+        "mineral": "Plata",
+        "estado": "Mantenimiento"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.31,
+          -46.68
+        ]
+      },
+      "properties": {
+        "nombre": "San José",
+        "empresa": "MINERA SANTA CRUZ S.A.",
+        "mineral": "Plata",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -65.69,
+          -23.21
+        ]
+      },
+      "properties": {
+        "nombre": "Aguilar",
+        "empresa": "COMPAÑIA MINERA AGUILAR S.A.",
+        "mineral": "Plomo",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.28,
+          -44.18
+        ]
+      },
+      "properties": {
+        "nombre": "Laguna Salada",
+        "empresa": "MAPLE EXPLORATION AND DEVELOPMENT INC.",
+        "mineral": "Uranio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.43,
+          -26.52
+        ]
+      },
+      "properties": {
+        "nombre": "Kachi",
+        "empresa": "Morena del Valle S.A.",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.27,
+          -27.38
+        ]
+      },
+      "properties": {
+        "nombre": "Agua Rica",
+        "empresa": "MINERA AGUA RICA LLC - (SUCURSAL ARGENTINA)",
+        "mineral": "Cobre",
+        "estado": "Prefactibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.9,
+          -30.01
+        ]
+      },
+      "properties": {
+        "nombre": "Del Carmen",
+        "empresa": "MINERA DEL CARMEN S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.52,
+          -30.54
+        ]
+      },
+      "properties": {
+        "nombre": "Valle de Chita",
+        "empresa": "MINERA SUD ARGENTINA S.A.",
+        "mineral": "Cobre",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.48,
+          -31.48
+        ]
+      },
+      "properties": {
+        "nombre": "Altar",
+        "empresa": "MINERA PEREGRINE ARGENTINA S.A.",
+        "mineral": "Cobre",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.42,
+          -41.73
+        ]
+      },
+      "properties": {
+        "nombre": "Calcatreu",
+        "empresa": "MINERA AQUILINE ARGENTINA S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.96,
+          -47.48
+        ]
+      },
+      "properties": {
+        "nombre": "Virginia",
+        "empresa": "MINERA DEL SOL S.A.",
+        "mineral": "Plata",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.49,
+          -47.61
+        ]
+      },
+      "properties": {
+        "nombre": "Las Calandrias",
+        "empresa": "MINERA MARIANA ARGENTINA S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.36,
+          -47.84
+        ]
+      },
+      "properties": {
+        "nombre": "La Josefina",
+        "empresa": "CERRO CAZADOR S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.91,
+          -48.19
+        ]
+      },
+      "properties": {
+        "nombre": "La Manchuria",
+        "empresa": "PATAGONIA GOLD S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.1,
+          -24.07
+        ]
+      },
+      "properties": {
+        "nombre": "Salar del Rincón",
+        "empresa": "RINCON MINING LIMITED",
+        "mineral": "Litio",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.88,
+          -25.33
+        ]
+      },
+      "properties": {
+        "nombre": "Sal de Vida",
+        "empresa": "Galaxy Lithium (Sal de Vida) S.A",
+        "mineral": "Litio",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.43,
+          -31.76
+        ]
+      },
+      "properties": {
+        "nombre": "El Pachón",
+        "empresa": "PACHON S.A. MINERA",
+        "mineral": "Cobre",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -71.21,
+          -42.88
+        ]
+      },
+      "properties": {
+        "nombre": "Suyai",
+        "empresa": "MINAS ARGENTINAS S.A.",
+        "mineral": "Oro",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.66,
+          -27.45
+        ]
+      },
+      "properties": {
+        "nombre": "Tres Quebradas",
+        "empresa": "LIEX S.A.",
+        "mineral": "Litio",
+        "estado": "Prefactibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.59,
+          -28.45
+        ]
+      },
+      "properties": {
+        "nombre": "Josemaría",
+        "empresa": "DESARROLLO DE PROSPECTOS MINEROS S.A.",
+        "mineral": "Cobre",
+        "estado": "Prefactibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.63,
+          -28.49
+        ]
+      },
+      "properties": {
+        "nombre": "Filo del Sol",
+        "empresa": "FILO DEL SOL EXPLORACION S.A.",
+        "mineral": "Cobre",
+        "estado": "Prefactibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.44,
+          -32.24
+        ]
+      },
+      "properties": {
+        "nombre": "San Jorge",
+        "empresa": "MINERA SAN JORGE S.A.",
+        "mineral": "Cobre",
+        "estado": "Prefactibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.98,
+          -24.12
+        ]
+      },
+      "properties": {
+        "nombre": "Rincón",
+        "empresa": "Pepinnini Lithium Limited",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.93,
+          -24.29
+        ]
+      },
+      "properties": {
+        "nombre": "Pular",
+        "empresa": "Pepinnini Lithium Limited",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.01,
+          -25.03
+        ]
+      },
+      "properties": {
+        "nombre": "Gallego",
+        "empresa": "Everlight Resources",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.15,
+          -25.11
+        ]
+      },
+      "properties": {
+        "nombre": "Rio Grande",
+        "empresa": "Regulus Argentina S.A",
+        "mineral": "Cobre",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.95,
+          -25.22
+        ]
+      },
+      "properties": {
+        "nombre": "Sal de Oro",
+        "empresa": "POSCO ARGENTINA S.A",
+        "mineral": "Litio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.07,
+          -25.22
+        ]
+      },
+      "properties": {
+        "nombre": "Salar del Hombre Muerto Norte",
+        "empresa": "NRG Metals Inc.",
+        "mineral": "Litio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -65.93,
+          -25.61
+        ]
+      },
+      "properties": {
+        "nombre": "Don Otto",
+        "empresa": "CNEA",
+        "mineral": "Uranio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.76,
+          -25.24
+        ]
+      },
+      "properties": {
+        "nombre": "Sal de Los Ángeles",
+        "empresa": "POTASIO Y LITIO DE ARGENTINA S.A.",
+        "mineral": "Litio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.79,
+          -25.27
+        ]
+      },
+      "properties": {
+        "nombre": "Diablillos",
+        "empresa": "PACIFIC RIM MINING CORPORATION ARGENTINA S.A.",
+        "mineral": "Oro",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.22,
+          -31.1
+        ]
+      },
+      "properties": {
+        "nombre": "Los Azules",
+        "empresa": "MINERA ANDES S.A.",
+        "mineral": "Cobre",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.7352,
+          -24.5691
+        ]
+      },
+      "properties": {
+        "nombre": "Taca Taca",
+        "empresa": "CORRIENTE ARGENTINA S.A.",
+        "mineral": "Cobre",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.86,
+          -29.19
+        ]
+      },
+      "properties": {
+        "nombre": "Taguas",
+        "empresa": "COMPAÑIA MINERA PIUQUENES S.A.",
+        "mineral": "Oro",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.53,
+          -22.71
+        ]
+      },
+      "properties": {
+        "nombre": "Puna Operation",
+        "empresa": "Puna Operations Inc",
+        "mineral": "Plata",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.35,
+          -22.57
+        ]
+      },
+      "properties": {
+        "nombre": "Ajedrez",
+        "empresa": "Espiritu de Los Andes S.A",
+        "mineral": "Au aluvional",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.34,
+          -22.43
+        ]
+      },
+      "properties": {
+        "nombre": "Córdoba",
+        "empresa": "Gasmarra Mineria S.A",
+        "mineral": "Au aluvional",
+        "estado": "Construcción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.8,
+          -23.26
+        ]
+      },
+      "properties": {
+        "nombre": "Providencia",
+        "empresa": "Canepa Humberto Julio",
+        "mineral": "Plata",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.16,
+          -48.66
+        ]
+      },
+      "properties": {
+        "nombre": "Claudia",
+        "empresa": "MINERA DEL SOL S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.37,
+          -36.26
+        ]
+      },
+      "properties": {
+        "nombre": "Don Sixto",
+        "empresa": "COGNITO LIMITED - SUCURSAL ARGENTINA",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.36,
+          -37.26
+        ]
+      },
+      "properties": {
+        "nombre": "Potasio",
+        "empresa": "BUNGE Y SERVICIOS DE MINERÍA",
+        "mineral": "Potasio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.8,
+          -39.93
+        ]
+      },
+      "properties": {
+        "nombre": "Amarillo Grande",
+        "empresa": "MINERA CIELO AZUL S.A.",
+        "mineral": "Uranio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.6,
+          -34.66
+        ]
+      },
+      "properties": {
+        "nombre": "Sierra Pintada",
+        "empresa": "CNEA",
+        "mineral": "Uranio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.65,
+          -29.81
+        ]
+      },
+      "properties": {
+        "nombre": "Jagüelito",
+        "empresa": "MEXPLORT PERFORACIONES MINERAS S.A.",
+        "mineral": "Oro",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.98,
+          -24.12
+        ]
+      },
+      "properties": {
+        "nombre": "Salar del Rincón - Argosy",
+        "empresa": "Puna Mining S.A.",
+        "mineral": "Litio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.8,
+          -24.31
+        ]
+      },
+      "properties": {
+        "nombre": "El Quevar",
+        "empresa": "SILEX ARGENTINA S.A.",
+        "mineral": "Plata",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.68,
+          -24.58
+        ]
+      },
+      "properties": {
+        "nombre": "Pastos Grandes",
+        "empresa": "PROYECTO PASTOS GRANDES S.A.",
+        "mineral": "Litio",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.71,
+          -24.58
+        ]
+      },
+      "properties": {
+        "nombre": "PPG",
+        "empresa": "LITHEA INC. SUCURSAL ARGENTINA",
+        "mineral": "Litio",
+        "estado": "Evaluación económica preliminar"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.15,
+          -46.86
+        ]
+      },
+      "properties": {
+        "nombre": "Cerro Negro",
+        "empresa": "OROPLATA S.A.",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.67,
+          -48.08
+        ]
+      },
+      "properties": {
+        "nombre": "Cerro Moro",
+        "empresa": "ESTELAR RESOURCES LIMITED - SUCURSAL ARGENTINA",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.26,
+          -48.39
+        ]
+      },
+      "properties": {
+        "nombre": "Cerro Vanguardia",
+        "empresa": "CERRO VANGUARDIA S.A.",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.66,
+          -48.69
+        ]
+      },
+      "properties": {
+        "nombre": "Mina Martha",
+        "empresa": "CERRO CAZADOR S.A.",
+        "mineral": "Plata",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.5,
+          -48.78
+        ]
+      },
+      "properties": {
+        "nombre": "Manantial Espejo",
+        "empresa": "MINERA TRITON ARGENTINA S.A.",
+        "mineral": "Plata",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.72,
+          -23.49
+        ]
+      },
+      "properties": {
+        "nombre": "Olaroz",
+        "empresa": "SALES DE JUJUY S. A.",
+        "mineral": "Litio",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.99,
+          -29.33
+        ]
+      },
+      "properties": {
+        "nombre": "Lama",
+        "empresa": "BARRICK EXPLORACIONES ARGENTINA S.A.",
+        "mineral": "Oro",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -65.37,
+          -41.67
+        ]
+      },
+      "properties": {
+        "nombre": "Sierra Grande",
+        "empresa": "MCC MINERA SIERRA GRANDE S.A.",
+        "mineral": "Hierro",
+        "estado": "Mantenimiento"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.55,
+          -46.95
+        ]
+      },
+      "properties": {
+        "nombre": "Lomada de Leiva",
+        "empresa": "PATAGONIA GOLD S.A.",
+        "mineral": "Oro",
+        "estado": "Proceso de Cierre"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.47,
+          -47.95
+        ]
+      },
+      "properties": {
+        "nombre": "Cap-Oeste",
+        "empresa": "PATAGONIA GOLD S.A.",
+        "mineral": "Oro",
+        "estado": "Mantenimiento"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -72.37,
+          -51.54
+        ]
+      },
+      "properties": {
+        "nombre": "Río Turbio",
+        "empresa": "YACIMIENTO CARBONIFERO RIO TURBIO",
+        "mineral": "Carbón",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.76,
+          -47.7
+        ]
+      },
+      "properties": {
+        "nombre": "Don Nicolás",
+        "empresa": "MINERA DON NICOLÁS",
+        "mineral": "Oro",
+        "estado": "Producción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -68.78,
+          -43.38
+        ]
+      },
+      "properties": {
+        "nombre": "Cerro Solo",
+        "empresa": "CNEA",
+        "mineral": "Uranio",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.29,
+          -47.42
+        ]
+      },
+      "properties": {
+        "nombre": "Lejano",
+        "empresa": "COEUR ARGENTINA S.R.L. (ex polimet)",
+        "mineral": "Plata",
+        "estado": "Exploración avanzada"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.72,
+          -24.85
+        ]
+      },
+      "properties": {
+        "nombre": "Centenario-Ratones",
+        "empresa": "ERAMINE SUDAMERICA S.A.",
+        "mineral": "Litio",
+        "estado": "Factibilidad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -67.78,
+          -25.08
+        ]
+      },
+      "properties": {
+        "nombre": "Lindero",
+        "empresa": "MANSFIELD MINERA S.A.",
+        "mineral": "Oro",
+        "estado": "Construcción"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -66.73,
+          -23.68
+        ]
+      },
+      "properties": {
+        "nombre": "Cauchari",
+        "empresa": "SOUTH AMERICAN SALARS S.A.",
+        "mineral": "Litio",
+        "estado": "Prefactibilidad"
+      }
+    }
+  ]
+}
