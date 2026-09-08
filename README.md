@@ -67,11 +67,30 @@ Monitoreo accesible desde el botón superior **[ 🩺 SALUD DE FUENTES (23) ]**:
 
 ---
 
-## 5. INICIO RÁPIDO
+## 5. ☁️ ARQUITECTURA SERVERLESS, "STATIC API" Y BYOK (CERO COSTOS)
+
+LUSAT v7 está diseñado con una arquitectura **100% Serverless y Descentralizada**, lo que permite hospedar la plataforma públicamente (por ejemplo, en **Vercel** o **GitHub Pages**) y escalar a miles de usuarios sin requerir servidores pagos ni colapsar APIs de terceros.
+
+### 🌐 GitHub Pages como "Static API"
+* En lugar de depender de servidores backend (NodeJS, Python, bases de datos SQL) que pueden caerse por exceso de peticiones, LUSAT lee sus grandes volúmenes de datos directamente de los archivos GeoJSON alojados en su propio repositorio.
+* Cuando MapLibre solicita cargar `datasets/pozos.geojson`, la **CDN global ultrarrápida de GitHub Pages** actúa como un servidor de API infalible. Esto garantiza 100% de Uptime y velocidad máxima de descarga de datos, con $0 en costos de transferencia.
+
+### 🤖 Backups Automáticos (Cron Jobs en GitHub Actions)
+* La carpeta `datasets/` no queda obsoleta. LUSAT incluye un motor ETL programado en **GitHub Actions** (`monthly_update.yml`).
+* **El día 1 de cada mes a las 00:00**, un servidor en la nube de GitHub se enciende gratuitamente, ejecuta `scripts/update_datasets.py` para descargar las últimas bases de datos oficiales (WRI, etc.), guarda un respaldo histórico en `/backups` y actualiza automáticamente los archivos en el repositorio.
+* Cuando GitHub actualiza los GeoJSON, todos los usuarios de LUSAT reciben los datos frescos al instante.
+
+### 🔑 Bring Your Own Key (BYOK) para APIs de Tiempo Real
+* LUSAT requiere conexión a servidores de altísima demanda para el tráfico satelital en vivo (**AisStream**) y el razonamiento del Geo-Copiloto IA (**Google Gemini**).
+* Para evitar bloqueos IP y facturas exorbitantes, LUSAT utiliza un modelo BYOK: todo el procesamiento lógico ocurre en el navegador de cada usuario (Client-Side). Cada usuario debe ingresar su propia clave API gratuita en la interfaz. 
+* Así, el tráfico se paraleliza desde las direcciones IP de los usuarios finales directamente hacia Google y AisStream, haciendo de LUSAT una plataforma **financieramente sustentable, inagotable y gratuita**.
+
+---
+
+## 6. INICIO RÁPIDO
 
 Ejecuta en tu terminal o haz doble clic sobre:
 ```text
 iniciar_lusat.bat
 ```
-Visor activo en **http://localhost:8085**.
 
