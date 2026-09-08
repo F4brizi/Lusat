@@ -2716,6 +2716,26 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
 
+    
+    let aisStaticCache = {};
+
+    async function loadAisStaticDb() {
+      try {
+        const localStr = localStorage.getItem('lusat_ais_static_db');
+        if (localStr) {
+          aisStaticCache = JSON.parse(localStr);
+        }
+        const res = await fetch('datasets/ais_static_db.json?' + Date.now());
+        if (res.ok) {
+          const globalDb = await res.json();
+          aisStaticCache = { ...aisStaticCache, ...globalDb };
+          localStorage.setItem('lusat_ais_static_db', JSON.stringify(aisStaticCache));
+        }
+      } catch (e) {
+        console.warn('No se pudo cargar la base estatica AIS', e);
+      }
+    }
+
     async function loadAisSnapshot() {
       try {
         const res = await fetch('datasets/ais_snapshot.geojson?' + Date.now());
@@ -2736,10 +2756,10 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
               shipClass: p.shipClass || 'A',
               destination: p.destination || 'No Reportado',
               timestamp: p.timestamp || Date.now(),
-              shipTypeString: 'Desconocido',
+              shipTypeString: p.type ? getShipTypeName(p.type) : 'Desconocido',
               eta: 'N/A',
-              length: 0,
-              beam: 0
+              length: p.length || 0,
+              beam: p.beam || 0
             });
           }
         });
@@ -2748,6 +2768,9 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
     async function connectAisStream() {
+      if (Object.keys(aisStaticCache).length === 0) {
+        await loadAisStaticDb();
+      }
       if (activeShips.size === 0) {
         await loadAisSnapshot();
       }

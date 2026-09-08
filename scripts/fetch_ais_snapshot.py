@@ -10,9 +10,28 @@ if not API_KEY:
     exit(1)
 
 OUTPUT_FILE = "datasets/ais_snapshot.geojson"
+STATIC_DB_FILE = "datasets/ais_static_db.json"
 LISTEN_DURATION = 60 # seconds
 
 active_ships = {}
+static_db = {}
+
+def load_static_db():
+    global static_db
+    if os.path.exists(STATIC_DB_FILE):
+        try:
+            with open(STATIC_DB_FILE, "r", encoding="utf-8") as f:
+                static_db = json.load(f)
+            print(f"Loaded {len(static_db)} ships from static DB.")
+        except Exception as e:
+            print(f"Error loading static DB: {e}")
+            static_db = {}
+
+def save_static_db():
+    os.makedirs(os.path.dirname(STATIC_DB_FILE), exist_ok=True)
+    with open(STATIC_DB_FILE, "w", encoding="utf-8") as f:
+        json.dump(static_db, f)
+    print(f"Saved {len(static_db)} ships to static DB.")
 
 async def collect_ais_data():
     uri = "wss://stream.aisstream.io/v0/stream"
@@ -41,10 +60,16 @@ async def collect_ais_data():
                     if not mmsi:
                         continue
                         
+                    # Sync meta name to static db
+                    name = meta.get("ShipName", "").strip()
+                    if name and mmsi not in static_db:
+                        static_db[mmsi] = {"n": name}
+                    elif name and mmsi in static_db and "n" not in static_db[mmsi]:
+                        static_db[mmsi]["n"] = name
+
                     if mmsi not in active_ships:
                         active_ships[mmsi] = {
                             "mmsi": mmsi,
-                            "name": meta.get("ShipName", "").strip(),
                             "timestamp": time.time() * 1000
                         }
                     
@@ -52,8 +77,21 @@ async def collect_ais_data():
                     
                     if msg_type == "ShipStaticData":
                         static = data.get("Message", {}).get("ShipStaticData", {})
-                        if static.get("Destination"):
-                            ship["destination"] = static["Destination"].strip()
+                        if mmsi not in static_db:
+                            static_db[mmsi] = {}
+                            
+                        dest = static.get("Destination")
+                        if dest:
+                            static_db[mmsi]["d"] = dest.strip()
+                            
+                        stype = static.get("Type")
+                        if stype is not None:
+                            static_db[mmsi]["t"] = stype
+                            
+                        dim = static.get("Dimension")
+                        if dim:
+                            static_db[mmsi]["l"] = dim.get("A", 0) + dim.get("B", 0)
+                            static_db[mmsi]["b"] = dim.get("C", 0) + dim.get("D", 0)
                     
                     elif msg_type in ["PositionReport", "StandardClassBPositionReport", "ExtendedClassBPositionReport"]:
                         ship["shipClass"] = "A" if msg_type == "PositionReport" else "B"
@@ -81,15 +119,20 @@ def save_geojson():
     features = []
     for mmsi, ship in active_ships.items():
         if "lat" in ship and "lng" in ship:
+            db_info = static_db.get(str(mmsi), {})
+            
             features.append({
                 "type": "Feature",
                 "properties": {
                     "mmsi": ship["mmsi"],
-                    "name": ship.get("name", "Desconocido"),
+                    "name": db_info.get("n", "Desconocido"),
                     "cog": ship.get("cog", 0),
                     "sog": ship.get("sog", 0),
                     "shipClass": ship.get("shipClass", "A"),
-                    "destination": ship.get("destination", "No Reportado"),
+                    "destination": db_info.get("d", "No Reportado"),
+                    "type": db_info.get("t", 0),
+                    "length": db_info.get("l", 0),
+                    "beam": db_info.get("b", 0),
                     "timestamp": ship["timestamp"]
                 },
                 "geometry": {
@@ -110,5 +153,7 @@ def save_geojson():
     print(f"Saved {len(features)} ships to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
+    load_static_db()
     asyncio.run(collect_ais_data())
     save_geojson()
+    save_static_db()
