@@ -19,7 +19,7 @@ def backup_file(filename):
         print(f"  -> Backup creado: {backup_filename}")
 
 def sync_wri():
-    print("\n[1/4] Actualizando WRI Global Power Plant Database...")
+    print("\n[1/6] Actualizando WRI Global Power Plant Database...")
     filename = "global_power_plants_wri.csv"
     backup_file(filename)
     url = "https://raw.githubusercontent.com/wri/global-power-plant-database/master/output_database/global_power_plant_database.csv"
@@ -29,19 +29,28 @@ def sync_wri():
         f.write(resp.read())
     print(f"  -> Actualizado: {os.path.getsize(dest)/(1024*1024):.2f} MB")
 
+def sync_pozos():
+    print("\n[2/6] Verificando Pozos de Hidrocarburos (Captulo IV)...")
+    print("  -> (Pipeline) TIP: Cuando consigas el endpoint CSV o API oficial de la Secretaria de Energia (datos.gob.ar), descrgalo ac y gurdalo como 'oil_wells_argentina_lite.geojson'. GitHub Actions automticamente lo compilar a PMTiles.")
+
+def sync_mineria():
+    print("\n[3/6] Verificando Proyectos Mineros (Litio, etc)...")
+    print("  -> (Pipeline) TIP: Aqu va la integracin con la API del Sistema de Informacin Abierta a la Comunidad sobre la Actividad Minera (SIACAM).")
+
 def sync_other():
-    # Placeholder for adding Overpass API or GEM scraping logic in the future
-    print("\n[2/4] Verificando GEM Pipelines...")
+    print("\n[4/6] Verificando GEM Pipelines...")
     print("  -> (Stub) Configurado para descargas manuales via CSV de suscripcion GEM.")
     
-    print("\n[3/4] Verificando OSM Infrastructure...")
+    print("\n[5/6] Verificando OSM Infrastructure...")
     print("  -> (Stub) API Overpass requiere parseo especifico. Actualizacion diferida.")
     
-    print("\n[4/4] Verificando ESA WorldCover...")
+    print("\n[6/6] Verificando ESA WorldCover...")
     print("  -> (Stub) Imagenes estaticas TIF anuales. Sin cambios este mes.")
 
 if __name__ == "__main__":
     print(f"Iniciando ciclo de actualizacion de datasets ({datetime.now().strftime('%Y-%m-%d')})")
     sync_wri()
+    sync_pozos()
+    sync_mineria()
     sync_other()
-    print("\nCiclo completado con exito.")
+    print("\nCiclo completado con exito. GitHub Actions ejecutara Tippecanoe a continuacion.")

@@ -26,9 +26,41 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
 
+      - name: Install Tippecanoe
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make g++ libsqlite3-dev zlib1g-dev
+          git clone https://github.com/felt/tippecanoe.git
+          cd tippecanoe
+          make -j
+          sudo make install
+          cd ..
+          rm -rf tippecanoe
+
       - name: Run update script
         run: |
           python scripts/update_datasets.py
+
+      - name: Compile PMTiles Vector Maps
+        run: |
+          echo "Compilando PMTiles actualizados..."
+          
+          # Si en el futuro update_datasets.py actualiza los GeoJSON, aca se auto-compilaran
+          if [ -f datasets/oil_wells_argentina_lite.geojson ]; then
+             tippecanoe -z12 -r1 --no-tile-size-limit --no-feature-limit -o datasets/oil_wells_argentina_lite.pmtiles -f datasets/oil_wells_argentina_lite.geojson
+          fi
+          
+          if [ -f datasets/osm_power_grid_lite.geojson ]; then
+             tippecanoe -z12 -r1 --no-tile-size-limit --no-feature-limit -o datasets/osm_power_grid_lite.pmtiles -f datasets/osm_power_grid_lite.geojson
+          fi
+          
+          if [ -f datasets/power_plants_lite.geojson ]; then
+             tippecanoe -z12 -o datasets/power_plants_lite.pmtiles -f --drop-densest-as-needed datasets/power_plants_lite.geojson
+          fi
+
+          if [ -f datasets/gem_pipelines_lite.geojson ]; then
+             tippecanoe -z12 -o datasets/gem_pipelines_lite.pmtiles -f --drop-densest-as-needed datasets/gem_pipelines_lite.geojson
+          fi
 
       - name: Commit and push changes
         run: |
@@ -41,5 +73,5 @@ jobs:
             exit 0
           fi
           
-          git commit -m "Automated dataset update"
+          git commit -m "Automated dataset update & PMTiles compilation"
           git push
