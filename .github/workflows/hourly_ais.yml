@@ -8,6 +8,9 @@ on:
 jobs:
   snapshot:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ais-snapshot
+      cancel-in-progress: false
     permissions:
       contents: write
     steps:
@@ -38,5 +41,7 @@ jobs:
             echo "No new AIS data to commit."
           else
             git commit -m "chore(ais): hourly snapshot and static DB update"
+            git pull --rebase origin main
             git push
           fi
+      
