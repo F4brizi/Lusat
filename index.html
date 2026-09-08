@@ -5769,7 +5769,8 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         console.log("AIS WebSocket Open");
         const subscriptionMessage = {
           APIKey: apiKey,
-          BoundingBoxes: [[[15.0, -85.0], [-60.0, -30.0]]]
+          BoundingBoxes: [[[-60.0, -85.0], [15.0, -30.0]]],
+          FilterMessageTypes: ["PositionReport", "ShipStaticData"]
         };
         aisSocket.send(JSON.stringify(subscriptionMessage));
         
