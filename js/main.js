@@ -368,6 +368,9 @@
     });
 
     // Inicializar Mapa MapLibre
+    let protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
     const map = new maplibregl.Map({
       container: 'map',
       transformRequest: (url, resourceType) => {
@@ -742,11 +745,12 @@
         });
 
         // 9. Ductos Críticos GEM
-        map.addSource('gem-pipelines', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        map.addSource('gem-pipelines', { type: 'vector', url: 'pmtiles://datasets/gem_pipelines_lite.pmtiles' });
         map.addLayer({
           id: 'gem-lines',
           type: 'line',
           source: 'gem-pipelines',
+          'source-layer': 'gem_pipelines_lite',
           layout: { 'visibility': 'none' },
           paint: {
             'line-color': ['case', ['in', 'Gas', ['get', 'product']], '#00e5ff', ['in', 'Oil', ['get', 'product']], '#ff3366', '#a855f7'],
@@ -756,11 +760,12 @@
         });
 
         // 10. Red Alta Tensión OSM
-        map.addSource('osm-grid', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        map.addSource('osm-grid', { type: 'vector', url: 'pmtiles://datasets/osm_power_grid_lite.pmtiles' });
         map.addLayer({
           id: 'osm-lines',
           type: 'line',
           source: 'osm-grid',
+          'source-layer': 'osm_power_grid_lite',
           layout: { 'visibility': 'none' },
           filter: ['==', '$type', 'LineString'],
           paint: {
@@ -770,21 +775,13 @@
           }
         });
 
-        // 11. Centrales Eléctricas WRI (34.936 puntos)
-        loadMsg.innerText = 'Cargando 34.936 centrales eléctricas globales...';
-        const resPlants = await fetch('datasets/power_plants_lite.geojson');
-        const dataPlants = await resPlants.json();
-        rawPowerPlants = dataPlants.features || [];
-        rawPowerPlants.forEach(f => {
-          let fuel = f.properties.fuel || 'Other';
-          if (!['Nuclear', 'Hydro', 'Solar', 'Wind', 'Gas', 'Coal', 'Oil'].includes(fuel)) f.properties.fuel = 'Other';
-        });
-
-        map.addSource('power-plants', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        // 11. Centrales Eléctricas WRI (PMTiles Vector)
+        map.addSource('power-plants', { type: 'vector', url: 'pmtiles://datasets/power_plants_lite.pmtiles' });
         map.addLayer({
           id: 'plants-layer',
           type: 'circle',
           source: 'power-plants',
+          'source-layer': 'power_plants_lite',
           layout: { 'visibility': 'none' },
           paint: {
             'circle-color': [
@@ -799,17 +796,13 @@
           }
         });
 
-        // 12. Pozos Hidrocarburíferos de Argentina (84.239 pozos oficiales)
-        loadMsg.innerText = 'Cargando 84.239 pozos de petróleo y gas de Argentina...';
-        const resWells = await fetch('datasets/oil_wells_argentina_lite.geojson');
-        const dataWells = await resWells.json();
-        rawOilWells = dataWells.features || [];
-
-        map.addSource('oil-wells-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        // 12. Pozos Hidrocarburíferos (PMTiles Vector)
+        map.addSource('oil-wells-src', { type: 'vector', url: 'pmtiles://datasets/oil_wells_argentina_lite.pmtiles' });
         map.addLayer({
           id: 'oil-wells-layer',
           type: 'circle',
           source: 'oil-wells-src',
+          'source-layer': 'oil_wells_argentina_lite',
           layout: { 'visibility': 'none' },
           paint: {
             'circle-color': [
@@ -830,13 +823,8 @@
           }
         });
 
-        // 13. Yacimientos Mineros & Salares de Litio (SIACAM / 101 Proyectos)
-        loadMsg.innerText = 'Cargando proyectos mineros y salares de litio...';
-        const resMining = await fetch('datasets/mining_lithium_projects.geojson');
-        const dataMining = await resMining.json();
-        rawMiningProjects = dataMining.features || [];
-
-        map.addSource('mining-projects-src', { type: 'geojson', data: { type: 'FeatureCollection', features: rawMiningProjects } });
+        // 13. Yacimientos Mineros & Salares de Litio (Lazy Load GeoJSON)
+        map.addSource('mining-projects-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
         map.addLayer({
           id: 'mining-projects-layer',
           type: 'circle',
@@ -2437,13 +2425,6 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
 
     async function applyOilFilters() {
       if (!isOilMasterVisible) return;
-      if (rawOilWells.length === 0) {
-          try {
-              const res = await fetch('datasets/oil_wells_argentina_lite.geojson');
-              const data = await res.json();
-              rawOilWells = data.features || [];
-          } catch(e) { console.error("Error loading oil wells", e); return; }
-      }
       applySpatialFiltersAll();
     }
 
@@ -2612,14 +2593,6 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
 
     async function applyPowerPlantFilters() {
       if (!isPlantsMasterVisible) return;
-      if (rawPowerPlants.length === 0) {
-          try {
-              const res = await fetch('datasets/power_plants_lite.geojson');
-              const data = await res.json();
-              rawPowerPlants = data.features || [];
-              rawPowerPlants.forEach(f => { if (!f.properties.fuel) f.properties.fuel = 'Other'; });
-          } catch(e) { console.error("Error loading plants", e); return; }
-      }
       applySpatialFiltersAll();
     }
 
@@ -2634,14 +2607,6 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
     async function toggleMasterGrid(enabled) { saveSessionConfig();
-      if (enabled && !isGridLoaded) {
-          try {
-              const res = await fetch('datasets/osm_power_grid_lite.geojson');
-              const data = await res.json();
-              map.getSource('osm-grid').setData(data);
-              isGridLoaded = true;
-          } catch(e) { console.error("Error loading grid", e); }
-      }
       const v = enabled ? 'visible' : 'none';
       if (map.getLayer('osm-lines')) map.setLayoutProperty('osm-lines', 'visibility', v);
       const dd = document.getElementById('dropdown-grid');
@@ -2650,14 +2615,6 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
     async function toggleMasterGem(enabled) { saveSessionConfig();
-      if (enabled && !isGemLoaded) {
-          try {
-              const res = await fetch('datasets/gem_pipelines_lite.geojson');
-              const data = await res.json();
-              map.getSource('gem-pipelines').setData(data);
-              isGemLoaded = true;
-          } catch(e) { console.error("Error loading gem", e); }
-      }
       const v = enabled ? 'visible' : 'none';
       if (map.getLayer('gem-lines')) map.setLayoutProperty('gem-lines', 'visibility', v);
       const dd = document.getElementById('dropdown-gem');
