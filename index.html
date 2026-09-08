@@ -5796,17 +5796,11 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
           if (typeof textData !== 'string') {
             textData = String(textData);
           }
-
-          if (msgCount === 0) {
-            console.log("AIS PRIMER MENSAJE:", textData.substring(0, 300));
-            alert("Llegó el primer mensaje satelital:\n" + textData.substring(0, 150) + "...");
-          }
-          msgCount++;
           
           const aisMessage = JSON.parse(textData);
           
           // Debugging errors from server
-          if (aisMessage.Message && aisMessage.Message.includes("error")) {
+          if (typeof aisMessage.Message === "string" && aisMessage.Message.includes("error")) {
             console.error("AIS SERVER ERROR:", aisMessage.Message);
           }
 
