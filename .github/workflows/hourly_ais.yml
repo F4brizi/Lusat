@@ -1,0 +1,40 @@
+﻿name: Hourly AIS Snapshot
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: pip install websockets
+          
+      - name: Fetch AIS Snapshot
+        env:
+          AIS_API_KEY: \$\{{ secrets.AIS_API_KEY }}
+        run: python scripts/fetch_ais_snapshot.py
+          
+      - name: Commit and Push Snapshot
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add datasets/ais_snapshot.geojson
+          
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No new AIS data to commit."
+          else
+            git commit -m "chore(ais): hourly snapshot update"
+            git push
+          fi
