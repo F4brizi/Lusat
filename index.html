@@ -3090,7 +3090,7 @@
         reference: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
       },
       carto_light: {
-        base: 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+        base: 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
         reference: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
       },
       topo: {
@@ -3450,27 +3450,21 @@
       style: {
         version: 8,
         sources: {
-          'base-raster-src': {
-            type: 'raster',
-            tiles: [BASEMAPS.satellite.base],
-            tileSize: 256,
-            attribution: '&copy; Esri, HERE, Garmin, OpenStreetMap'
-          },
-          'political-ref-src': {
-            type: 'raster',
-            tiles: [BASEMAPS.satellite.reference],
-            tileSize: 256,
-            attribution: '&copy; Esri, DeLorme'
-          }
+          'basemap-dark-src': { type: 'raster', tiles: [BASEMAPS.dark.base], tileSize: 256, attribution: 'Esri' },
+          'basemap-satellite-src': { type: 'raster', tiles: [BASEMAPS.satellite.base], tileSize: 256, attribution: 'Esri, Maxar' },
+          'basemap-light-src': { type: 'raster', tiles: [BASEMAPS.light.base], tileSize: 256, attribution: 'Esri' },
+          'basemap-carto_light-src': { type: 'raster', tiles: [BASEMAPS.carto_light.base], tileSize: 256, attribution: 'CartoDB' },
+          'basemap-topo-src': { type: 'raster', tiles: [BASEMAPS.topo.base], tileSize: 256, attribution: 'Esri' },
+          'basemap-street-src': { type: 'raster', tiles: [BASEMAPS.street.base], tileSize: 256, attribution: 'Esri' },
+          'political-ref-src': { type: 'raster', tiles: [BASEMAPS.satellite.reference], tileSize: 256 }
         },
         layers: [
-          {
-            id: 'base-raster',
-            type: 'raster',
-            source: 'base-raster-src',
-            minzoom: 0,
-            maxzoom: 19
-          }
+          { id: 'basemap-dark', type: 'raster', source: 'basemap-dark-src', layout: { visibility: 'none' } },
+          { id: 'basemap-light', type: 'raster', source: 'basemap-light-src', layout: { visibility: 'none' } },
+          { id: 'basemap-carto_light', type: 'raster', source: 'basemap-carto_light-src', layout: { visibility: 'none' } },
+          { id: 'basemap-topo', type: 'raster', source: 'basemap-topo-src', layout: { visibility: 'none' } },
+          { id: 'basemap-street', type: 'raster', source: 'basemap-street-src', layout: { visibility: 'none' } },
+          { id: 'basemap-satellite', type: 'raster', source: 'basemap-satellite-src', layout: { visibility: 'visible' } }
         ]
       },
       center: [-68.5, -38.5], // Vista inicial centrada en Cuenca Neuquina / Vaca Muerta
@@ -3977,6 +3971,7 @@
           layout: {
             'visibility': 'none',
             'text-field': '▲',
+            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
             'text-size': 18,
             'text-rotate': ['get', 'cog'],
             'text-allow-overlap': true,
@@ -6074,50 +6069,13 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         document.getElementById('btn-' + type).classList.add('active');
       }
 
-      const targetBase = BASEMAPS[type].base;
-      const targetRef = BASEMAPS[type].reference;
-      
-      if (map.getSource('base-raster-src')) {
-        map.removeLayer('base-raster');
-        map.removeSource('base-raster-src');
-      }
-      map.addSource('base-raster-src', {
-        type: 'raster',
-        tiles: [targetBase],
-        tileSize: 256,
-        maxzoom: 19,
-        attribution: '&copy; BaseMap Providers'
-      });
-      map.addLayer({
-        id: 'base-raster',
-        type: 'raster',
-        source: 'base-raster-src',
-        minzoom: 0,
-        maxzoom: 24
-      }, map.getLayer('opentopo-layer') ? 'opentopo-layer' : (map.getLayer('hillshade-layer') ? 'hillshade-layer' : undefined));
-
-      if (map.getSource('political-ref-src')) {
-        if (map.getLayer('political-reference-layer')) map.removeLayer('political-reference-layer');
-        map.removeSource('political-ref-src');
-      }
-      map.addSource('political-ref-src', {
-        type: 'raster',
-        tiles: [targetRef],
-        tileSize: 256,
-        maxzoom: 19,
-        attribution: '&copy; Reference Providers'
-      });
-      map.addLayer({
-        id: 'political-reference-layer',
-        type: 'raster',
-        source: 'political-ref-src',
-        minzoom: 0,
-        maxzoom: 24,
-        layout: { 'visibility': isPoliticalMasterVisible ? 'visible' : 'none' },
-        paint: {
-          'raster-opacity': parseFloat(document.getElementById('range-political-opacity')?.value || '95') / 100
+      const allBasemaps = ['dark', 'satellite', 'light', 'carto_light', 'topo', 'street'];
+      allBasemaps.forEach(bm => {
+        const layerId = 'basemap-' + bm;
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', bm === type ? 'visible' : 'none');
         }
-      }, 'roads-vector-line');
+      });
     }
 
     // Bookmarks de Ubicación
