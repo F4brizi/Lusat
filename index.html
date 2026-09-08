@@ -3967,26 +3967,20 @@
         });
         map.addLayer({
           id: 'ais-ships-layer',
-          type: 'symbol',
+          type: 'circle',
           source: 'ais-ships-src',
           layout: {
-            'visibility': 'none',
-            'text-field': '▲',
-            'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
-            'text-size': 18,
-            'text-rotate': ['get', 'cog'],
-            'text-allow-overlap': true,
-            'text-pitch-alignment': 'map',
-            'text-rotation-alignment': 'map'
+            'visibility': 'none'
           },
           paint: {
-            'text-color': [
+            'circle-radius': 5,
+            'circle-color': [
               'case',
-              ['==', ['get', 'shipClass'], 'A'], '#60a5fa', // Blue for Class A
-              '#34d399' // Green for Class B
+              ['==', ['get', 'shipClass'], 'A'], '#60a5fa',
+              '#34d399'
             ],
-            'text-halo-color': '#0f172a',
-            'text-halo-width': 2
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#0f172a'
           }
         });
         map.addLayer({
