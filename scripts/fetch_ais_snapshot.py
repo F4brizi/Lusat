@@ -19,7 +19,7 @@ async def collect_ais_data():
     
     subscription_message = {
         "APIKey": API_KEY,
-        "BoundingBoxes": [[[-60.0, -85.0], [15.0, -30.0]]],
+        "BoundingBoxes": [[[-60.0, -80.0], [-20.0, -35.0]]],
         "FilterMessageTypes": ["PositionReport", "StandardClassBPositionReport", "ExtendedClassBPositionReport", "ShipStaticData"]
     }
     

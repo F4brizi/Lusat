@@ -2658,7 +2658,7 @@
           <div class="layer-card-header">
             <div class="layer-title-area" onclick="toggleDropdown('ais')">
               <span class="caret-btn" id="caret-ais">▶</span>
-              <span class="layer-name" style="color:#60a5fa;">🚢 Tráfico Marítimo (AIS) <span id="ais-status-indicator" style="font-size:10px; color:#94a3b8; margin-left:6px; font-weight:normal;">(🔴 Desconectado)</span></span>
+              <span class="layer-name" style="color:#60a5fa;">🚢 Entidades en Movimiento <span id="ais-status-indicator" style="font-size:10px; color:#94a3b8; margin-left:6px; font-weight:normal;">(🔴 Desconectado)</span></span>
             </div>
             <label class="switch">
               <input type="checkbox" id="chk-ais" onchange="toggleMasterAis(this.checked)" />
@@ -2681,6 +2681,9 @@
             </div>
             <div style="margin-top:8px;">
               <button class="btn-micro" style="background:rgba(96, 165, 250, 0.15); border-color:#60a5fa; color:#60a5fa; width:100%; justify-content:center;" onclick="openAisKeyModal()">⚙️ Configurar API Key AIS</button>
+            </div>
+            <div style="margin-top:10px; font-size:10px; color:#64748b; line-height:1.4; border-top:1px solid rgba(255,255,255,0.05); padding-top:8px;">
+              <em>Nota: Los datos provienen de redes colaborativas terrestres (T-AIS). La cobertura en estuarios y ríos depende de receptores voluntarios activos y puede ser parcial o nula.</em>
             </div>
           </div>
         </div>
@@ -4306,10 +4309,6 @@
           const chk = document.getElementById('chk-landcover');
           if (chk) { chk.checked = true; toggleMasterLandCover(true); }
         }
-        if (l.ais) {
-          const chk = document.getElementById('chk-ais');
-          if (chk) { chk.checked = true; toggleMasterAis(true); }
-        }
 
         // 3. Restaurar Mapa Base
         if (config.baseMap && config.baseMap !== activeBase) {
@@ -5821,7 +5820,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         console.log("AIS WebSocket Open");
         const subscriptionMessage = {
           APIKey: apiKey,
-          BoundingBoxes: [[[-60.0, -85.0], [15.0, -30.0]]]
+          BoundingBoxes: [[[-60.0, -80.0], [-20.0, -35.0]]]
         };
         aisSocket.send(JSON.stringify(subscriptionMessage));
         
