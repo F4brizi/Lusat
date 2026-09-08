@@ -5655,6 +5655,23 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     // ==========================================
     let aisSocket = null;
     let activeShips = new Map();
+
+    activeShips.set(999999999, {
+      mmsi: 999999999,
+      shipClass: 'A',
+      name: 'BUQUE FANTASMA DE PRUEBA',
+      lat: -38.5,
+      lng: -68.5,
+      cog: 90,
+      sog: 10,
+      timestamp: Date.now() + 90000000,
+      shipTypeString: 'Prueba',
+      destination: 'Vaca Muerta',
+      eta: 'N/A',
+      length: 100,
+      beam: 20
+    });
+
     let aisUpdateInterval = null;
     let isAisMasterVisible = false;
 
