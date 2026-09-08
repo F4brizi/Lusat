@@ -3969,9 +3969,6 @@
           id: 'ais-ships-layer',
           type: 'circle',
           source: 'ais-ships-src',
-          layout: {
-            'visibility': 'none'
-          },
           paint: {
             'circle-radius': 5,
             'circle-color': [
@@ -3983,25 +3980,7 @@
             'circle-stroke-color': '#0f172a'
           }
         });
-        map.addLayer({
-          id: 'ais-ships-labels',
-          type: 'symbol',
-          source: 'ais-ships-src',
-          layout: {
-            'visibility': 'none',
-            'text-field': ['get', 'name'],
-            'text-font': ['Open Sans Bold'],
-            'text-size': 11,
-            'text-offset': [0, 1.2],
-            'text-anchor': 'top',
-            'text-optional': true
-          },
-          paint: {
-            'text-color': '#93c5fd',
-            'text-halo-color': '#0f172a',
-            'text-halo-width': 2
-          }
-        });
+
 
         // Popups
         setupPopups();
@@ -5719,12 +5698,9 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       if (chk) chk.checked = false;
     }
 
-    function toggleMasterAis(enabled) { saveSessionConfig();
+    function toggleMasterAis(enabled) { 
+      saveSessionConfig();
       isAisMasterVisible = enabled;
-      const v = enabled ? 'visible' : 'none';
-      if (map.getLayer('ais-ships-layer')) map.setLayoutProperty('ais-ships-layer', 'visibility', v);
-      if (map.getLayer('ais-ships-labels')) map.setLayoutProperty('ais-ships-labels', 'visibility', v);
-      
       const dd = document.getElementById('dropdown-ais');
       if (enabled) dd.classList.remove('disabled');
       else dd.classList.add('disabled');
@@ -5734,6 +5710,8 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       } else {
         disconnectAisStream();
       }
+      
+      updateAisMapSource();
     }
 
     function getShipTypeName(type) {
@@ -5898,6 +5876,11 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
 
       const now = Date.now();
       const features = [];
+      
+      if (!isAisMasterVisible) {
+        map.getSource('ais-ships-src').setData({ type: 'FeatureCollection', features: [] });
+        return;
+      }
       
       for (const [mmsi, ship] of activeShips.entries()) {
         // Eliminar barcos que no envían reporte en 15 minutos (900000 ms)
