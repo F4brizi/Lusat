@@ -3110,16 +3110,21 @@
     let rawPowerPlants = [];
     let rawOilWells = [];
     let rawMiningProjects = [];
+    let rawOilWells = [];
+    let rawMiningProjects = [];
     let isBboxActive = true;
     // INICIO CON TODAS LAS CAPAS APAGADAS (0 SATURACIÓN)
     let isPoliticalMasterVisible = false;
     let isHillshadeMasterVisible = false;
     let isHydroMasterVisible = false;
     let isOilMasterVisible = false;
+    let isCuencasLoaded = false;
+    let isGemLoaded = false;
+    let isGridLoaded = false;
     let isMiningMasterVisible = false;
     let isCadastreMasterVisible = false;
     let isRoadsMasterVisible = false;
-    let isPlantsLayerVisible = false;
+    let isPlantsMasterVisible = false;
     let isGridMasterVisible = false;
     let isGemMasterVisible = false;
     let isLandCoverMasterVisible = false;
@@ -3691,7 +3696,7 @@
         loadMsg.innerText = 'Cargando Cuencas Hidrocarburíferas de Argentina...';
         map.addSource('cuencas-oil-src', {
           type: 'geojson',
-          data: 'datasets/cuencas_hidrocarburos_argentina.geojson'
+          data: { type: 'FeatureCollection', features: [] }
         });
 
         map.addLayer({
@@ -3808,7 +3813,7 @@
         });
 
         // 9. Ductos Críticos GEM
-        map.addSource('gem-pipelines', { type: 'geojson', data: 'datasets/gem_pipelines_lite.geojson' });
+        map.addSource('gem-pipelines', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
         map.addLayer({
           id: 'gem-lines',
           type: 'line',
@@ -3822,7 +3827,7 @@
         });
 
         // 10. Red Alta Tensión OSM
-        map.addSource('osm-grid', { type: 'geojson', data: 'datasets/osm_power_grid_lite.geojson' });
+        map.addSource('osm-grid', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
         map.addLayer({
           id: 'osm-lines',
           type: 'line',
@@ -5471,9 +5476,21 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
     // Toggle Pozos & Cuencas Hidrocarburíferas
-    function toggleMasterOil(enabled) { saveSessionConfig();
+    async function toggleMasterOil(enabled) { saveSessionConfig();
       isOilMasterVisible = enabled;
       const v = enabled ? 'visible' : 'none';
+      
+      if (enabled && !isCuencasLoaded) {
+          try {
+              const res = await fetch('datasets/cuencas_hidrocarburos_argentina.geojson');
+              const data = await res.json();
+              map.getSource('cuencas-oil-src').setData(data);
+              isCuencasLoaded = true;
+          } catch(e) { console.error("Error loading cuencas", e); }
+      }
+      
+      if (enabled) await applyOilFilters();
+      
       if (map.getLayer('oil-wells-layer')) map.setLayoutProperty('oil-wells-layer', 'visibility', v);
       if (map.getLayer('cuencas-oil-fill')) map.setLayoutProperty('cuencas-oil-fill', 'visibility', v);
       if (map.getLayer('cuencas-oil-line')) map.setLayoutProperty('cuencas-oil-line', 'visibility', v);
@@ -5489,22 +5506,38 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       if (map.getLayer('cuencas-oil-line')) map.setLayoutProperty('cuencas-oil-line', 'visibility', v);
     }
 
-    function applyOilFilters() {
+    async function applyOilFilters() {
+      if (!isOilMasterVisible) return;
+      if (rawOilWells.length === 0) {
+          try {
+              const res = await fetch('datasets/oil_wells_argentina_lite.geojson');
+              const data = await res.json();
+              rawOilWells = data.features || [];
+          } catch(e) { console.error("Error loading oil wells", e); return; }
+      }
       applySpatialFiltersAll();
     }
 
     // Toggle Minería & Litio
-    function toggleMasterMining(enabled) { saveSessionConfig();
+    async function toggleMasterMining(enabled) { saveSessionConfig();
       isMiningMasterVisible = enabled;
+      if (enabled) await applyMiningFilters();
       const v = enabled ? 'visible' : 'none';
       if (map.getLayer('mining-projects-layer')) map.setLayoutProperty('mining-projects-layer', 'visibility', v);
-
       const dd = document.getElementById('dropdown-mining');
       if (enabled) dd.classList.remove('disabled');
       else dd.classList.add('disabled');
     }
 
-    function applyMiningFilters() {
+    async function applyMiningFilters() {
+      if (!isMiningMasterVisible) return;
+      if (rawMiningProjects.length === 0) {
+          try {
+              const res = await fetch('datasets/mining_lithium_projects_argentina.geojson');
+              const data = await res.json();
+              rawMiningProjects = data.features || [];
+          } catch(e) { console.error("Error loading mining", e); return; }
+      }
       const fLit = document.getElementById('chk-min-lithium').checked;
       const fCop = document.getElementById('chk-min-copper').checked;
       const fPrec = document.getElementById('chk-min-precious').checked;
@@ -5648,16 +5681,38 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       }
     }
 
+    async function applyPowerPlantFilters() {
+      if (!isPlantsMasterVisible) return;
+      if (rawPowerPlants.length === 0) {
+          try {
+              const res = await fetch('datasets/power_plants_lite.geojson');
+              const data = await res.json();
+              rawPowerPlants = data.features || [];
+              rawPowerPlants.forEach(f => { if (!f.properties.fuel) f.properties.fuel = 'Other'; });
+          } catch(e) { console.error("Error loading plants", e); return; }
+      }
+      applySpatialFiltersAll();
+    }
+
     // Toggle Centrales Eléctricas
-    function toggleMasterPlants(enabled) { saveSessionConfig();
-      isPlantsLayerVisible = enabled;
+    async function toggleMasterPlants(enabled) { saveSessionConfig();
+      isPlantsMasterVisible = enabled;
+      if (enabled) await applyPowerPlantFilters();
       if (map.getLayer('plants-layer')) map.setLayoutProperty('plants-layer', 'visibility', enabled ? 'visible' : 'none');
       const dd = document.getElementById('dropdown-plants');
       if (enabled) dd.classList.remove('disabled');
       else dd.classList.add('disabled');
     }
 
-    function toggleMasterGrid(enabled) { saveSessionConfig();
+    async function toggleMasterGrid(enabled) { saveSessionConfig();
+      if (enabled && !isGridLoaded) {
+          try {
+              const res = await fetch('datasets/osm_power_grid_lite.geojson');
+              const data = await res.json();
+              map.getSource('osm-grid').setData(data);
+              isGridLoaded = true;
+          } catch(e) { console.error("Error loading grid", e); }
+      }
       const v = enabled ? 'visible' : 'none';
       if (map.getLayer('osm-lines')) map.setLayoutProperty('osm-lines', 'visibility', v);
       const dd = document.getElementById('dropdown-grid');
@@ -5665,7 +5720,15 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       else dd.classList.add('disabled');
     }
 
-    function toggleMasterGem(enabled) { saveSessionConfig();
+    async function toggleMasterGem(enabled) { saveSessionConfig();
+      if (enabled && !isGemLoaded) {
+          try {
+              const res = await fetch('datasets/gem_pipelines_lite.geojson');
+              const data = await res.json();
+              map.getSource('gem-pipelines').setData(data);
+              isGemLoaded = true;
+          } catch(e) { console.error("Error loading gem", e); }
+      }
       const v = enabled ? 'visible' : 'none';
       if (map.getLayer('gem-lines')) map.setLayoutProperty('gem-lines', 'visibility', v);
       const dd = document.getElementById('dropdown-gem');
