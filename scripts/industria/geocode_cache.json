@@ -1,0 +1,1501 @@
+{
+ "Loma Negra L'Amalí, Olavarría, Buenos Aires, Argentina": null,
+ "Villa Alfredo Fortabat, Olavarría, Buenos Aires, Argentina": null,
+ "Olavarría, Buenos Aires, Argentina": {
+  "lat": -36.8938752,
+  "lon": -60.3231676,
+  "display_name": "Olavarría, Partido de Olavarría, Buenos Aires, B7400, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "city",
+  "addresstype": "city"
+ },
+ "Loma Negra, Barker, Benito Juárez, Buenos Aires, Argentina": {
+  "lat": -37.6831052,
+  "lon": -59.3878953,
+  "display_name": "Fábrica Barker - Loma Negra, Villa Cacique, Partido de Benito Juárez, Buenos Aires, 7005, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Loma Negra, Ramallo, Buenos Aires, Argentina": null,
+ "Parque Industrial Comirsa, Ramallo, Buenos Aires, Argentina": null,
+ "Ramallo, Buenos Aires, Argentina": {
+  "lat": -33.4849394,
+  "lon": -60.0044551,
+  "display_name": "Ramallo, Partido de Ramallo, Buenos Aires, B2914, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "town",
+  "addresstype": "town"
+ },
+ "Loma Negra, Zapala, Neuquén, Argentina": {
+  "lat": -38.8969064,
+  "lon": -70.0352233,
+  "display_name": "Loma Negra, S/N, Michacheo, Zapala, Municipio de Zapala, Departamento Zapala, Neuquén, Q8340, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Loma Negra, El Alto, Catamarca, Argentina": {
+  "lat": -28.4675263,
+  "lon": -65.2279455,
+  "display_name": "Loma Negra, Municipio de Tapso, Departamento El Alto, Catamarca, K4235, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Loma Negra, Rivadavia, San Juan, Argentina": {
+  "lat": -31.5488786,
+  "lon": -68.6750219,
+  "display_name": "Loma Negra, 16000 (O), Comuna La Bebida, Rivadavia, San Juan, 5478, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Sierras Bayas, Olavarría, Buenos Aires, Argentina": {
+  "lat": -36.9366533,
+  "lon": -60.1561071,
+  "display_name": "Sierras Bayas, Partido de Olavarría, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "village"
+ },
+ "Holcim, Malagueño, Córdoba, Argentina": {
+  "lat": -31.4783737,
+  "lon": -64.3623855,
+  "display_name": "Acceso a Fábrica Holcim, Camino Blanco, Malagueño, Municipio de Malagueño, Pedanía Calera, Departamento Santa María, Córdoba, X5186, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "residential",
+  "addresstype": "road"
+ },
+ "Holcim, Campana, Buenos Aires, Argentina": {
+  "lat": -34.1497828,
+  "lon": -59.0128397,
+  "display_name": "Holcim Argentina, Campana, Partido de Zárate, Buenos Aires, B2804NPA, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Holcim, Puesto Viejo, Jujuy, Argentina": {
+  "lat": -24.4903949,
+  "lon": -64.9565799,
+  "display_name": "Planta de producción de cemento Holcim, Municipio de Puesto Viejo, Departamento El Carmen, Jujuy, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Holcim, Capdeville, Las Heras, Mendoza, Argentina": {
+  "lat": -32.7399201,
+  "lon": -68.8434849,
+  "display_name": "Holcim - Planta Capdeville, Distrito Capdevilla, Departamento Las Heras, Mendoza, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Yocsina, Córdoba, Argentina": {
+  "lat": -31.4458784,
+  "lon": -64.3647249,
+  "display_name": "Yocsina, Municipio de Malagueño, Pedanía Calera, Departamento Santa María, Córdoba, X5186, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "village",
+  "addresstype": "village"
+ },
+ "Cementos Avellaneda, Olavarría, Buenos Aires, Argentina": null,
+ "San Jacinto, Olavarría, Buenos Aires, Argentina": {
+  "lat": -36.9661722,
+  "lon": -60.2582502,
+  "display_name": "San Jacinto, Olavarría, Partido de Olavarría, Buenos Aires, 7403, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "isolated_dwelling",
+  "addresstype": "isolated_dwelling"
+ },
+ "Cementos Avellaneda, La Calera, San Luis, Argentina": null,
+ "La Calera, San Luis, Argentina": {
+  "lat": -32.8772895,
+  "lon": -66.8424726,
+  "display_name": "La Calera, Comisión Municipal de La Calera, Belgrano, San Luis, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "village",
+  "addresstype": "village"
+ },
+ "Chenaut 435, Villa Luzuriaga, Buenos Aires, Argentina": {
+  "lat": -34.673203,
+  "lon": -58.6024994,
+  "display_name": "435, Chenaut, María Mazzarello, Villa Luzuriaga, Partido de La Matanza, Buenos Aires, 1753, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "house",
+  "addresstype": "place"
+ },
+ "Monseñor López May 1245, Isidro Casanova, Buenos Aires, Argentina": {
+  "lat": -34.7380547,
+  "lon": -58.5693295,
+  "display_name": "Monseñor López May, Primero de Mayo, Isidro Casanova, Partido de La Matanza, Buenos Aires, 1757, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "residential",
+  "addresstype": "road"
+ },
+ "Camino del Buen Ayre, José León Suárez, Buenos Aires, Argentina": {
+  "lat": -34.5100011,
+  "lon": -58.5900917,
+  "display_name": "Camino Parque del Buen Ayre, Barrio Nuevo, Villa José León Suárez, Partido de General San Martín, Buenos Aires, B1655, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "motorway",
+  "addresstype": "road"
+ },
+ "Camino a Capilla del Señor 10, Campana, Buenos Aires, Argentina": null,
+ "Campana, Buenos Aires, Argentina": {
+  "lat": -34.1636631,
+  "lon": -58.9586837,
+  "display_name": "Campana, Partido de Campana, Buenos Aires, 2804, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "town",
+  "addresstype": "town"
+ },
+ "PCR Cemento, Pico Truncado, Santa Cruz, Argentina": {
+  "lat": -46.7901033,
+  "lon": -67.928267,
+  "display_name": "Planta de Cemento PCR Santa Cruz, Industrial, Pico Truncado, Deseado, Santa Cruz, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "PCR, Comodoro Rivadavia, Chubut, Argentina": {
+  "lat": -45.800746,
+  "lon": -67.4225691,
+  "display_name": "Estacionamiento PCR, Avenida Alejandro Maiz, Los Locos, Km. 8 - Don Bosco, Municipio de Comodoro Rivadavia, Departamento Escalante, Chubut, U9000, Argentina",
+  "osm_type": "way",
+  "class": "amenity",
+  "type": "parking",
+  "addresstype": "amenity"
+ },
+ "Caleras San Juan, Cienaguita, San Juan, Argentina": null,
+ "Cienaguita, Sarmiento, San Juan, Argentina": {
+  "lat": -32.0725659,
+  "lon": -68.6918635,
+  "display_name": "La Cienaguita, Sarmiento, San Juan, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "village",
+  "addresstype": "village"
+ },
+ "Sibelco, La Laja, Albardón, San Juan, Argentina": null,
+ "La Laja, Albardón, San Juan, Argentina": {
+  "lat": -31.3426698,
+  "lon": -68.4926163,
+  "display_name": "La Laja, Villa Ampacama, Albardón, San Juan, Argentina",
+  "osm_type": "way",
+  "class": "natural",
+  "type": "bare_rock",
+  "addresstype": "bare_rock"
+ },
+ "Sibelco, Los Berros, San Juan, Argentina": null,
+ "Los Berros, Sarmiento, San Juan, Argentina": {
+  "lat": -31.9526998,
+  "lon": -68.6542662,
+  "display_name": "Los Berros, Sarmiento, San Juan, 5431, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "village",
+  "addresstype": "village"
+ },
+ "El Villicum, Albardón, San Juan, Argentina": null,
+ "Albardón, San Juan, Argentina": {
+  "lat": -31.2175835,
+  "lon": -68.4370241,
+  "display_name": "Albardón, San Juan, J5419, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "state_district"
+ },
+ "CEFAS, Los Berros, San Juan, Argentina": null,
+ "San José de Jáchal, San Juan, Argentina": {
+  "lat": -30.2416005,
+  "lon": -68.7465881,
+  "display_name": "San José de Jáchal, Jáchal, San Juan, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Quilpo, Cruz del Eje, Córdoba, Argentina": {
+  "lat": -30.8626982,
+  "lon": -64.6843418,
+  "display_name": "Quilpo, Pedanía San Marcos, Departamento Cruz del Eje, Córdoba, X5280, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "unclassified",
+  "addresstype": "road"
+ },
+ "Cal Malagueño, Malagueño, Córdoba, Argentina": null,
+ "Malagueño, Córdoba, Argentina": {
+  "lat": -31.4623876,
+  "lon": -64.354327,
+  "display_name": "Malagueño, Municipio de Malagueño, Pedanía Calera, Departamento Santa María, Córdoba, X5186, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "town",
+  "addresstype": "town"
+ },
+ "Zapala, Neuquén, Argentina": {
+  "lat": -38.9006215,
+  "lon": -70.0668573,
+  "display_name": "Municipio de Zapala, Departamento Zapala, Neuquén, Q8340, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Knauf, Luján de Cuyo, Mendoza, Argentina": null,
+ "Luján de Cuyo, Mendoza, Argentina": {
+  "lat": -33.1085238,
+  "lon": -69.0129984,
+  "display_name": "Departamento Luján de Cuyo, Mendoza, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "county"
+ },
+ "Saint-Gobain, Chimbas, San Juan, Argentina": null,
+ "Chimbas, San Juan, Argentina": {
+  "lat": -31.4846789,
+  "lon": -68.5093785,
+  "display_name": "Chimbas, San Juan, 5413, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "state_district"
+ },
+ "Durlock, General Acha, La Pampa, Argentina": {
+  "lat": -37.364506,
+  "lon": -64.5883977,
+  "display_name": "Barrio durlock, General Acha, Municipio de General Acha, Departamento Utracán, La Pampa, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "neighbourhood",
+  "addresstype": "neighbourhood"
+ },
+ "General Acha, La Pampa, Argentina": {
+  "lat": -37.3781867,
+  "lon": -64.6043041,
+  "display_name": "General Acha, Municipio de General Acha, Departamento Utracán, La Pampa, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Durlock, Malargüe, Mendoza, Argentina": null,
+ "Malargüe, Mendoza, Argentina": {
+  "lat": -35.4683806,
+  "lon": -69.5847324,
+  "display_name": "Malargüe, Distrito Ciudad de Malargüe, Departamento Malargüe, Mendoza, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Stefenelli, General Roca, Río Negro, Argentina": {
+  "lat": -39.0480153,
+  "lon": -67.5427659,
+  "display_name": "Padre Stefenelli, Municipio de General Roca, Departamento General Roca, Río Negro, 8232, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Parque Industrial Roca II, General Roca, Río Negro, Argentina": {
+  "lat": -39.0176178,
+  "lon": -67.5374294,
+  "display_name": "Parque Industrial, General Roca, Municipio de General Roca, Departamento General Roca, Río Negro, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Durlock, San Justo, La Matanza, Buenos Aires, Argentina": null,
+ "San Justo, La Matanza, Buenos Aires, Argentina": {
+  "lat": -34.6774186,
+  "lon": -58.5607837,
+  "display_name": "San Justo, Partido de La Matanza, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Ternium, San Nicolás de los Arroyos, Buenos Aires, Argentina": null,
+ "Avenida Savio, San Nicolás de los Arroyos, Buenos Aires, Argentina": {
+  "lat": -33.3581704,
+  "lon": -60.1907668,
+  "display_name": "Avenida General Manuel Nicolás Savio, San Nicolás de los Arroyos, Partido de San Nicolás, Buenos Aires, 2900, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "primary",
+  "addresstype": "road"
+ },
+ "Ternium, Haedo, Buenos Aires, Argentina": {
+  "lat": -34.6387361,
+  "lon": -58.610293,
+  "display_name": "Ternium, Valentín Gómez, Haedo, Partido de Morón, Buenos Aires, B1706CGO, Argentina",
+  "osm_type": "node",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Ternium, Canning, Buenos Aires, Argentina": {
+  "lat": -34.8774638,
+  "lon": -58.5116003,
+  "display_name": "Ternium Siderar Planta Canning, Canning, Partido de Ezeiza, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Ternium, Ensenada, Buenos Aires, Argentina": {
+  "lat": -34.8574059,
+  "lon": -57.9409601,
+  "display_name": "Ternium Siderar Ensenada, Ensenada, Partido de Ensenada, Buenos Aires, B1925, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Ternium, Florencio Varela, Buenos Aires, Argentina": null,
+ "Florencio Varela, Buenos Aires, Argentina": {
+  "lat": -34.8044384,
+  "lon": -58.2783224,
+  "display_name": "San Juan Bautista, Partido de Florencio Varela, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Acindar, Villa Constitución, Santa Fe, Argentina": {
+  "lat": -33.2571678,
+  "lon": -60.2851901,
+  "display_name": "Acindar Villa Constitucion, Villa Constitución, Municipio de Villa Constitución, Departamento Constitución, Santa Fe, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Acindar, San Nicolás de los Arroyos, Buenos Aires, Argentina": {
+  "lat": -33.346726,
+  "lon": -60.2571747,
+  "display_name": "Acindar San Nicolás (Perfiles Livianos), Lares, San Nicolás de los Arroyos, Partido de San Nicolás, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Acindar, La Tablada, Buenos Aires, Argentina": {
+  "lat": -34.6926381,
+  "lon": -58.5419024,
+  "display_name": "Acindar, Doctor Ignacio Arieta, Villa Giardino, La Tablada, Partido de La Matanza, Buenos Aires, 1751, Argentina",
+  "osm_type": "node",
+  "class": "highway",
+  "type": "bus_stop",
+  "addresstype": "highway"
+ },
+ "Tenaris Siderca, Campana, Buenos Aires, Argentina": {
+  "lat": -34.1522056,
+  "lon": -58.976535,
+  "display_name": "Tenaris Siderca, 250, Campana, Partido de Campana, Buenos Aires, B2804MHA, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Siat, Valentín Alsina, Buenos Aires, Argentina": {
+  "lat": -34.6622163,
+  "lon": -58.4098938,
+  "display_name": "Tenaris SIAT, Paso de Burgos, Valentín Alsina, Partido de Lanús, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Tenaris, Villa Constitución, Santa Fe, Argentina": {
+  "lat": -33.2646967,
+  "lon": -60.2893572,
+  "display_name": "Tenaris SIAT, Villa Constitución, Municipio de Villa Constitución, Departamento Constitución, Santa Fe, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Tenaris, Villa Mercedes, San Luis, Argentina": {
+  "lat": -33.7138066,
+  "lon": -65.3988717,
+  "display_name": "Tenaris Metalmecanica, Ruta Provincial 24, La Adolfina, Municipio de Villa Mercedes, General Pedernera, San Luis, D5733, Argentina",
+  "osm_type": "way",
+  "class": "building",
+  "type": "industrial",
+  "addresstype": "building"
+ },
+ "Acerbrag, Bragado, Buenos Aires, Argentina": null,
+ "Bragado, Buenos Aires, Argentina": {
+  "lat": -35.1155766,
+  "lon": -60.489771,
+  "display_name": "Bragado, Partido de Bragado, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Gerdau, Pérez, Santa Fe, Argentina": {
+  "lat": -33.0072656,
+  "lon": -60.8156726,
+  "display_name": "GERDAU, Pérez, Municipio de Pérez, Gran Rosario, Departamento Rosario, Santa Fe, S2121, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Aceros Zapla, Palpalá, Jujuy, Argentina": {
+  "lat": -24.2476171,
+  "lon": -65.1976758,
+  "display_name": "Aceros Zapla, El Brete, Municipio de Palpalá, Departamento Palpalá, Jujuy, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Aluar, Puerto Madryn, Chubut, Argentina": {
+  "lat": -42.739023,
+  "lon": -65.0533812,
+  "display_name": "Aluar (Puerto Madryn) Power Plant, Parque Industrial Pesado, Municipio de Puerto Madryn, Departamento Biedma, Chubut, U9120, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Aluar, Abasto, La Plata, Buenos Aires, Argentina": {
+  "lat": -35.0010624,
+  "lon": -58.1194914,
+  "display_name": "ALUAR, Abasto, Partido de La Plata, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Cerámica San Lorenzo, Azul, Buenos Aires, Argentina": {
+  "lat": -36.7437242,
+  "lon": -59.8557092,
+  "display_name": "Cerámica San Lorenzo, Chacras de Bruno, Azul, Partido de Azul, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "San Juan, San Juan, Argentina": {
+  "lat": -31.5370909,
+  "lon": -68.5251802,
+  "display_name": "San Juan, Capital, San Juan, J5402DEA, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "city",
+  "addresstype": "city"
+ },
+ "Resistencia, Chaco, Argentina": {
+  "lat": -27.6048829,
+  "lon": -59.1932003,
+  "display_name": "Municipio de Resistencia, Departamento San Fernando, Chaco, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "municipality"
+ },
+ "VASA Vidriería Argentina, Llavallol, Buenos Aires, Argentina": null,
+ "Vidriería Argentina, Llavallol, Buenos Aires, Argentina": {
+  "lat": -34.7993802,
+  "lon": -58.4174093,
+  "display_name": "Vidriería Argentina S.A. / Air Liquide, Avenida Antártida Argentina, Llavallol, Partido de Lomas de Zamora, Buenos Aires, 1836, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "VASA, Los Cardales, Exaltación de la Cruz, Buenos Aires, Argentina": null,
+ "Los Cardales, Exaltación de la Cruz, Buenos Aires, Argentina": {
+  "lat": -34.3308878,
+  "lon": -58.9874495,
+  "display_name": "Los Cardales, Urquiza, Los Cardales, Partido de Exaltación de la Cruz, Buenos Aires, B2814CMN, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "Saint-Gobain Isover, Llavallol, Buenos Aires, Argentina": null,
+ "Llavallol, Lomas de Zamora, Buenos Aires, Argentina": {
+  "lat": -34.7965742,
+  "lon": -58.4301778,
+  "display_name": "Llavallol, Partido de Lomas de Zamora, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Isopor Novapol, Pilar, Buenos Aires, Argentina": null,
+ "Pilar, Buenos Aires, Argentina": {
+  "lat": -34.4570918,
+  "lon": -58.9141609,
+  "display_name": "Pilar, Partido del Pilar, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Edilteco, Pilar, Buenos Aires, Argentina": null,
+ "Concrehaus, Villa Rosa, Pilar, Buenos Aires, Argentina": null,
+ "Villa Rosa, Pilar, Buenos Aires, Argentina": {
+  "lat": -34.4162586,
+  "lon": -58.8721314,
+  "display_name": "Villa Rosa, Hipólito Yrigoyen, Luchetti, Villa Rosa, Partido del Pilar, Buenos Aires, 1631, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "Paperfood, Pilar, Buenos Aires, Argentina": null,
+ "Parque Patricios, Ciudad Autónoma de Buenos Aires, Argentina": {
+  "lat": -34.6384945,
+  "lon": -58.4063149,
+  "display_name": "Parque Patricios, Monteagudo, Parque Patricios, Buenos Aires, Distrito Tecnológico, Comuna 4, Ciudad Autónoma de Buenos Aires, C1437EYD, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "Parque Industrial Norte, San Luis, San Luis, Argentina": {
+  "lat": -33.3175091,
+  "lon": -66.3710606,
+  "display_name": "Parque Industrial Norte, San Luis, Municipio de San Luis, Juan Martín de Pueyrredón, San Luis, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Río Grande, Tierra del Fuego, Argentina": {
+  "lat": -53.7858275,
+  "lon": -67.7018562,
+  "display_name": "Municipio de Río Grande, Departamento Río Grande, Tierra del Fuego, V9420, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Famaillá, Tucumán, Argentina": {
+  "lat": -27.054364,
+  "lon": -65.4020439,
+  "display_name": "Municipio de Famaillá, Departamento Famaillá, Tucumán, T4132, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Avenida Presidente Juan Domingo Perón 3750, San Justo, La Matanza, Buenos Aires, Argentina": {
+  "lat": -34.6811834,
+  "lon": -58.549438,
+  "display_name": "Grupo Dema, 3750, Avenida Presidente Juan Domingo Perón, Villa Sahores, San Justo, Partido de La Matanza, Buenos Aires, 1754, Argentina",
+  "osm_type": "way",
+  "class": "building",
+  "type": "industrial",
+  "addresstype": "building"
+ },
+ "Industrias Saladillo, Parque Industrial Pilar, Buenos Aires, Argentina": {
+  "lat": -34.4074538,
+  "lon": -58.9736693,
+  "display_name": "Industrias Saladillo S.A., 2639, Calle 9, Parque industrial Pilar, Fátima, Partido del Pilar, Buenos Aires, B1629MXA, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Amanco Wavin, Pablo Podestá, Buenos Aires, Argentina": null,
+ "Avenida Pérez Galdós 8760, Pablo Podestá, Buenos Aires, Argentina": null,
+ "Pablo Podestá, Tres de Febrero, Buenos Aires, Argentina": {
+  "lat": -34.5797581,
+  "lon": -58.6097322,
+  "display_name": "Pablo Podestá, Partido de Tres de Febrero, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Rotoplas, Parque Industrial Pilar, Buenos Aires, Argentina": {
+  "lat": -34.3913677,
+  "lon": -58.9830294,
+  "display_name": "Rotoplas, 358, Calle 22, Parque industrial Pilar, Fátima, Partido del Pilar, Buenos Aires, B1629MXA, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Avenida San Martín 2768, Lanús Oeste, Buenos Aires, Argentina": {
+  "lat": -34.7007891,
+  "lon": -58.4121998,
+  "display_name": "2768, Avenida General José de San Martín, Villa Albariños, Lanús Oeste, Partido de Lanús, Buenos Aires, 1824, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "house",
+  "addresstype": "place"
+ },
+ "John Deere, Granadero Baigorria, Santa Fe, Argentina": {
+  "lat": -32.8675825,
+  "lon": -60.7126253,
+  "display_name": "John Deere Argentina, 481, Granadero Baigorria, Municipio de Granadero Baigorria, Gran Rosario, Departamento Rosario, Santa Fe, 2152, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Pauny, Las Varillas, Córdoba, Argentina": {
+  "lat": -31.8792278,
+  "lon": -62.7185318,
+  "display_name": "Pauny S.A., Las Varillas, Municipio de Las Varillas, Pedanía Sacanta, Departamento San Justo, Córdoba, X2400, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Santiago del Estero, Santiago del Estero, Argentina": {
+  "lat": -27.7877148,
+  "lon": -64.2595062,
+  "display_name": "Santiago del Estero, Municipio de Santiago del Estero, Departamento Juan Francisco Borges, Santiago del Estero, G4200, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Agrinar, Granadero Baigorria, Santa Fe, Argentina": {
+  "lat": -32.8542514,
+  "lon": -60.7027704,
+  "display_name": "Agrinar, Urquiza, El Paraíso, Granadero Baigorria, Municipio de Granadero Baigorria, Gran Rosario, Departamento Rosario, Santa Fe, 2152, Argentina",
+  "osm_type": "way",
+  "class": "building",
+  "type": "industrial",
+  "addresstype": "building"
+ },
+ "CNH Industrial, Córdoba, Argentina": {
+  "lat": -31.4533943,
+  "lon": -64.1266671,
+  "display_name": "Reserva Natural Recreativa Stellantis-CNH Industrial, José Ignacio Díaz 5° Sección, Los Artesanos, Córdoba, Municipio de Córdoba, Pedanía Capital, Departamento Capital, Córdoba, X5000, Argentina",
+  "osm_type": "way",
+  "class": "leisure",
+  "type": "nature_reserve",
+  "addresstype": "nature_reserve"
+ },
+ "Agrale, Mercedes, Buenos Aires, Argentina": {
+  "lat": -34.6562866,
+  "lon": -59.3323742,
+  "display_name": "Agrale Argentina, Partido de Mercedes, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Metalúrgica Hermann, Gualeguaychú, Entre Ríos, Argentina": null,
+ "Parque Industrial Gualeguaychú, Gualeguaychú, Entre Ríos, Argentina": {
+  "lat": -33.032556,
+  "lon": -58.6089022,
+  "display_name": "Parque Industrial Gualeguaychú, Gualeguaychú, Distrito Costa Uruguay Sur, Departamento Gualeguaychú, Entre Ríos, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Sola y Brusa, Franck, Santa Fe, Argentina": {
+  "lat": -31.5780578,
+  "lon": -60.9355364,
+  "display_name": "Sola y Brusa S.A, San Martín, Franck, Municipio de Franck, Departamento Las Colonias, Santa Fe, S3009WAA, Argentina",
+  "osm_type": "node",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Semirremolques Vulcano, Las Rosas, Santa Fe, Argentina": null,
+ "Avenida Dickinson 1151, Las Rosas, Santa Fe, Argentina": {
+  "lat": -32.4706044,
+  "lon": -61.5875436,
+  "display_name": "1151, Avenida Dickinson, Municipio de Las Rosas, Las Rosas, Departamento Belgrano, Santa Fe, S2520, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "house",
+  "addresstype": "place"
+ },
+ "Helvética, Cañada de Gómez, Santa Fe, Argentina": {
+  "lat": -32.813658,
+  "lon": -61.3987735,
+  "display_name": "Helvética, 1291, Cañada de Gómez, Municipio de Cañada de Gómez, Departamento Iriondo, Santa Fe, 2500, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Lambert Hermanos, Concepción del Uruguay, Entre Ríos, Argentina": null,
+ "Concepción del Uruguay, Entre Ríos, Argentina": {
+  "lat": -32.4851849,
+  "lon": -58.2320232,
+  "display_name": "Concepción del Uruguay, Distrito Molino, Departamento Uruguay, Entre Ríos, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "República de Entre Ríos 1880, General Ramírez, Entre Ríos, Argentina": {
+  "lat": -32.1722507,
+  "lon": -60.1958174,
+  "display_name": "Avenida República de Entre Ríos, Barrio San Carlos, General Ramírez, Distrito Isletas, Departamento Diamante, Entre Ríos, 3164, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "tertiary",
+  "addresstype": "road"
+ },
+ "Cometto, Tortuguitas, Buenos Aires, Argentina": null,
+ "Tortuguitas, Malvinas Argentinas, Buenos Aires, Argentina": {
+  "lat": -34.4705116,
+  "lon": -58.7587082,
+  "display_name": "Tortuguitas, Partido de Malvinas Argentinas, Buenos Aires, 1667, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Danés, Roldán, Santa Fe, Argentina": {
+  "lat": -32.8637353,
+  "lon": -60.8829478,
+  "display_name": "Danés SRL, Ruta Nacional A012, Villa Eduardito, Roldán, Municipio de Roldán, Gran Rosario, Departamento San Lorenzo, Santa Fe, S2134, Argentina",
+  "osm_type": "relation",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "SICA Metalúrgica, Esperanza, Santa Fe, Argentina": {
+  "lat": -31.4373069,
+  "lon": -60.9494121,
+  "display_name": "Sica Metalúrgica Argentina S.A., 3746, Kreder, Esperanza, Municipio de Esperanza, Departamento Las Colonias, Santa Fe, 3080, Argentina",
+  "osm_type": "way",
+  "class": "craft",
+  "type": "metal_construction",
+  "addresstype": "craft"
+ },
+ "Taboga Hnos, Marcos Juárez, Córdoba, Argentina": null,
+ "Marcos Juárez, Córdoba, Argentina": {
+  "lat": -32.6946933,
+  "lon": -62.104385,
+  "display_name": "Municipio de Marcos Juárez, Pedanía Espinillos, Departamento Marcos Juárez, Córdoba, X2580, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Indasyc, Trelew, Chubut, Argentina": null,
+ "Trelew, Chubut, Argentina": {
+  "lat": -43.2531242,
+  "lon": -65.3094407,
+  "display_name": "Trelew, Municipio de Trelew, Departamento Rawson, Chubut, U9100, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "city",
+  "addresstype": "city"
+ },
+ "Molino Cañuelas, Cañuelas, Buenos Aires, Argentina": {
+  "lat": -35.057527,
+  "lon": -58.750014,
+  "display_name": "Molino Cañuelas, Cañuelas, Partido de Cañuelas, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Molino Cañuelas, Carlos Spegazzini, Buenos Aires, Argentina": null,
+ "Carlos Spegazzini, Ezeiza, Buenos Aires, Argentina": {
+  "lat": -34.9104245,
+  "lon": -58.5931172,
+  "display_name": "Carlos Spegazzini, Partido de Ezeiza, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Molino Cañuelas, Pilar, Buenos Aires, Argentina": null,
+ "Molino Cañuelas, Chacabuco, Buenos Aires, Argentina": null,
+ "Chacabuco, Buenos Aires, Argentina": {
+  "lat": -34.6297043,
+  "lon": -60.470185,
+  "display_name": "Chacabuco, Acceso a la estación, Chacabuco, Partido de Chacabuco, Buenos Aires, 6740, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "Molino Cañuelas, San Justo, La Matanza, Buenos Aires, Argentina": null,
+ "Molino Cañuelas, Tres Arroyos, Buenos Aires, Argentina": null,
+ "Tres Arroyos, Buenos Aires, Argentina": {
+  "lat": -38.3770014,
+  "lon": -60.2755685,
+  "display_name": "Tres Arroyos, Partido de Tres Arroyos, Buenos Aires, B7500, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Molino Cañuelas, Pigüé, Buenos Aires, Argentina": {
+  "lat": -37.605171,
+  "lon": -62.4116955,
+  "display_name": "Molino Cañuelas, Ducós, Pigüé, Cuartel II, Partido de Saavedra, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Molino Cañuelas, Rosario, Santa Fe, Argentina": null,
+ "Rosario, Santa Fe, Argentina": {
+  "lat": -32.9593609,
+  "lon": -60.6617024,
+  "display_name": "Rosario, Municipio de Rosario, Gran Rosario, Departamento Rosario, Santa Fe, S2000, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Santa Fe, Santa Fe, Argentina": {
+  "lat": -31.6474914,
+  "lon": -60.6428557,
+  "display_name": "Santa Fe Capital, Departamento La Capital, Santa Fe, S3000, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "municipality"
+ },
+ "Molino Cañuelas, Resistencia, Chaco, Argentina": null,
+ "Molino Cañuelas, Realicó, La Pampa, Argentina": {
+  "lat": -35.0301592,
+  "lon": -64.2345626,
+  "display_name": "Planta Industrial Molino Cañuelas Realicó, Quintas Norte, Realicó, Municipio de Realicó, Departamento Realicó, La Pampa, L6200, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Salta, Salta, Argentina": {
+  "lat": -24.7892946,
+  "lon": -65.4103194,
+  "display_name": "Salta, Capital, Salta, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Molino Cañuelas, Adelia María, Córdoba, Argentina": {
+  "lat": -33.6250947,
+  "lon": -64.0302754,
+  "display_name": "Molino Cañuelas S.A.C.I.F.I.A., Roque Sáenz Peña, Adelia María, Municipio de Adelia María, Pedanía Cautiva, Departamento Río Cuarto, Córdoba, X5800, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Molino Florencia, Laboulaye, Córdoba, Argentina": null,
+ "Laboulaye, Córdoba, Argentina": {
+  "lat": -34.1286369,
+  "lon": -63.3905826,
+  "display_name": "Municipio de Laboulaye, Pedanía La Amarga, Departamento Presidente Roque Sáenz Peña, Córdoba, X6120, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Córdoba, Córdoba, Argentina": {
+  "lat": -31.4166867,
+  "lon": -64.1834193,
+  "display_name": "Córdoba, Municipio de Córdoba, Pedanía Capital, Departamento Capital, Córdoba, X5000, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Terminal Las Palmas, Zárate, Buenos Aires, Argentina": null,
+ "Zárate, Buenos Aires, Argentina": {
+  "lat": -34.0954713,
+  "lon": -59.0245097,
+  "display_name": "Zárate, Partido de Zárate, Buenos Aires, 2800, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "city",
+  "addresstype": "city"
+ },
+ "Cargill, Pilar, Buenos Aires, Argentina": {
+  "lat": -34.400247,
+  "lon": -58.9769843,
+  "display_name": "Cargill Pilar, 3467, Calle 9, Parque industrial Pilar, Fátima, Partido del Pilar, Buenos Aires, B1629MXA, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Molino Minetti, Córdoba, Argentina": {
+  "lat": -31.4491281,
+  "lon": -64.2198835,
+  "display_name": "Molino José Minetti, Villa La Lonja, SMATA, Córdoba, Municipio de Córdoba, Pedanía Capital, Departamento Capital, Córdoba, X5000, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Dique 3, Puerto Madero, Ciudad Autónoma de Buenos Aires, Argentina": null,
+ "Puerto Madero, Ciudad Autónoma de Buenos Aires, Argentina": {
+  "lat": -34.6103764,
+  "lon": -58.3622067,
+  "display_name": "Puerto Madero, Buenos Aires, Comuna 1, Ciudad Autónoma de Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Bahía Blanca, Buenos Aires, Argentina": {
+  "lat": -38.7176522,
+  "lon": -62.2654871,
+  "display_name": "Bahía Blanca, Cuartel I, Partido de Bahía Blanca, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Molino Tres Arroyos, Tres Arroyos, Buenos Aires, Argentina": {
+  "lat": -38.5839124,
+  "lon": -60.6074707,
+  "display_name": "Molino Harinero \"Las Rosas del Sur\", Ruta Nacional 3 Don Juan Manuel de Rosas, Micaela Cascallares, Partido de Tres Arroyos, Buenos Aires, Argentina",
+  "osm_type": "node",
+  "class": "historic",
+  "type": "ruins",
+  "addresstype": "historic"
+ },
+ "San Lorenzo, Santa Fe, Argentina": {
+  "lat": -32.7454865,
+  "lon": -60.743091,
+  "display_name": "San Lorenzo, Municipio de San Lorenzo, Gran Rosario, Departamento San Lorenzo, Santa Fe, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Rafaela, Santa Fe, Argentina": {
+  "lat": -31.2526923,
+  "lon": -61.4916758,
+  "display_name": "Rafaela, Municipio de Rafaela, Departamento Castellanos, Santa Fe, S2300, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Villa María, Córdoba, Argentina": {
+  "lat": -32.4106245,
+  "lon": -63.2435809,
+  "display_name": "Villa María, Municipio de Villa María, Pedanía Villa María, Departamento General San Martín, Córdoba, X5900, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Cañuelas, Buenos Aires, Argentina": {
+  "lat": -35.0540248,
+  "lon": -58.7617379,
+  "display_name": "Cañuelas, Partido de Cañuelas, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Mastellone Hnos, General Rodríguez, Buenos Aires, Argentina": null,
+ "La Serenísima, General Rodríguez, Buenos Aires, Argentina": {
+  "lat": -34.5943243,
+  "lon": -58.9522589,
+  "display_name": "La Serenísima, Parque Irigoyen, General Rodríguez, Partido de General Rodríguez, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Mastellone, Longchamps, Buenos Aires, Argentina": null,
+ "Longchamps, Almirante Brown, Buenos Aires, Argentina": {
+  "lat": -34.85803,
+  "lon": -58.3881462,
+  "display_name": "Longchamps, Partido de Almirante Brown, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Mastellone, Trenque Lauquen, Buenos Aires, Argentina": null,
+ "Trenque Lauquen, Buenos Aires, Argentina": {
+  "lat": -35.9731074,
+  "lon": -62.7328794,
+  "display_name": "Trenque Lauquen, Partido de Trenque Lauquen, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Leubucó, Buenos Aires, Argentina": {
+  "lat": -36.8721838,
+  "lon": -63.0398665,
+  "display_name": "Leubucó, Partido de Adolfo Alsina, Buenos Aires, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "hamlet",
+  "addresstype": "hamlet"
+ },
+ "Mastellone, Tandil, Buenos Aires, Argentina": null,
+ "Tandil, Buenos Aires, Argentina": {
+  "lat": -37.3282887,
+  "lon": -59.1356957,
+  "display_name": "Tandil, Partido de Tandil, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Mastellone, Canals, Córdoba, Argentina": {
+  "lat": -33.589224,
+  "lon": -62.8591516,
+  "display_name": "Mastellone Hermanos, T-34-07, Municipio de Canals, Pedanía Loboy, Departamento Unión, Córdoba, X2550, Argentina",
+  "osm_type": "way",
+  "class": "building",
+  "type": "yes",
+  "addresstype": "building"
+ },
+ "Mastellone, Villa Mercedes, San Luis, Argentina": {
+  "lat": -33.6313453,
+  "lon": -65.5486577,
+  "display_name": "Mastellone San Luis, Camino Interfábrica, Altos de Chacabuco, Ciudad Jardín I, Municipio de Villa Mercedes, General Pedernera, San Luis, Argentina",
+  "osm_type": "relation",
+  "class": "building",
+  "type": "industrial",
+  "addresstype": "building"
+ },
+ "Vicente Casares, Cañuelas, Buenos Aires, Argentina": {
+  "lat": -34.9622565,
+  "lon": -58.6479721,
+  "display_name": "Vicente Casares, Ruta Provincial 205, Partido de Cañuelas, Buenos Aires, 1808, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "SanCor, Sunchales, Santa Fe, Argentina": {
+  "lat": -30.9366483,
+  "lon": -61.5646148,
+  "display_name": "Sancor, Sunchales, Municipio de Sunchales, Departamento Castellanos, Santa Fe, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Sunchales, Santa Fe, Argentina": {
+  "lat": -30.9450891,
+  "lon": -61.5608072,
+  "display_name": "Municipio de Sunchales, Departamento Castellanos, Santa Fe, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "SanCor, Gálvez, Santa Fe, Argentina": {
+  "lat": -32.0416386,
+  "lon": -61.2154091,
+  "display_name": "Sancor cooperativa limitada, 450, Bulevar Argentino, Florida, Gálvez, Municipio de Gálvez, Departamento San Jerónimo, Santa Fe, S2252, Argentina",
+  "osm_type": "node",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "SanCor, San Guillermo, Santa Fe, Argentina": {
+  "lat": -30.3630675,
+  "lon": -61.9241124,
+  "display_name": "Sancor, Presidente General Roca, Municipio de San Guillermo, Departamento San Cristóbal, Santa Fe, 2347, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "SanCor, Devoto, Córdoba, Argentina": {
+  "lat": -31.4053612,
+  "lon": -62.2908086,
+  "display_name": "Industria Láctea SanCor, Bulevar 25 de Mayo, Municipio de Devoto, Pedanía Juárez Celman, Departamento San Justo, Córdoba, X2400, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "SanCor, Balnearia, Córdoba, Argentina": null,
+ "Balnearia, Córdoba, Argentina": {
+  "lat": -31.0128256,
+  "lon": -62.6654133,
+  "display_name": "Balnearia, Municipio de Balnearia, Pedanía Concepción, Departamento San Justo, Córdoba, X2400, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "village"
+ },
+ "SanCor, La Carlota, Córdoba, Argentina": null,
+ "La Carlota, Córdoba, Argentina": {
+  "lat": -33.4179364,
+  "lon": -63.2934951,
+  "display_name": "La Carlota, Municipio de La Carlota, Pedanía La Carlota, Departamento Juárez Celman, Córdoba, X2670, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Adecoagro, Chivilcoy, Buenos Aires, Argentina": {
+  "lat": -34.9364618,
+  "lon": -60.0075722,
+  "display_name": "Adecoagro, Chivilcoy, Partido de Chivilcoy, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Adecoagro, Morteros, Córdoba, Argentina": null,
+ "Morteros, Córdoba, Argentina": {
+  "lat": -30.7107038,
+  "lon": -62.0067058,
+  "display_name": "Morteros, Municipio de Morteros, Pedanía Libertad, Departamento San Justo, Córdoba, X2421, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Milkaut, Franck, Santa Fe, Argentina": {
+  "lat": -31.5868662,
+  "lon": -60.9324708,
+  "display_name": "Milkaut, 1602, Sarmiento, Franck, Municipio de Franck, Departamento Las Colonias, Santa Fe, S3009, Argentina",
+  "osm_type": "way",
+  "class": "man_made",
+  "type": "works",
+  "addresstype": "man_made"
+ },
+ "Ilolay, Rafaela, Santa Fe, Argentina": {
+  "lat": -31.2630657,
+  "lon": -61.5014683,
+  "display_name": "Ilolay, Rafaela, Municipio de Rafaela, Departamento Castellanos, Santa Fe, S2300, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Saputo, Rafaela, Santa Fe, Argentina": null,
+ "Punta del Agua, Córdoba, Argentina": {
+  "lat": -33.202795,
+  "lon": -65.1415959,
+  "display_name": "Punta del Agua, Pedanía Achiras, Departamento Río Cuarto, Córdoba, X5800, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Tadeo Czerweny, Gálvez, Santa Fe, Argentina": null,
+ "Bulevar Argentino 374, Gálvez, Santa Fe, Argentina": {
+  "lat": -32.0410517,
+  "lon": -61.214212,
+  "display_name": "374, Bulevar Argentino, Florida, Gálvez, Municipio de Gálvez, Departamento San Jerónimo, Santa Fe, S2252BZG, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "house",
+  "addresstype": "place"
+ },
+ "Prysmian, Mataderos, Ciudad Autónoma de Buenos Aires, Argentina": null,
+ "Mataderos, Ciudad Autónoma de Buenos Aires, Argentina": {
+  "lat": -34.6578631,
+  "lon": -58.5017617,
+  "display_name": "Mataderos, Buenos Aires, Comuna 9, Ciudad Autónoma de Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "IMSA, Merlo, Buenos Aires, Argentina": {
+  "lat": -34.6614246,
+  "lon": -58.7399433,
+  "display_name": "IMSA, Lago del Bosque, Merlo, Partido de Merlo, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Central Hidroeléctrica Futaleufú, Chubut, Argentina": null,
+ "Embalse Amutui Quimei, Chubut, Argentina": {
+  "lat": -43.0076699,
+  "lon": -71.9639339,
+  "display_name": "Embalse Amutui Quimei, Departamento Futaleufú, Chubut, Argentina",
+  "osm_type": "relation",
+  "class": "water",
+  "type": "reservoir",
+  "addresstype": "reservoir"
+ },
+ "Parque Eólico Aluar, Puerto Madryn, Chubut, Argentina": null,
+ "Puerto Madryn, Chubut, Argentina": {
+  "lat": -42.7673414,
+  "lon": -65.0365942,
+  "display_name": "Municipio de Puerto Madryn, Departamento Biedma, Chubut, U9120, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Parque Eólico Cementos Avellaneda, Olavarría, Buenos Aires, Argentina": null,
+ "Ternium Siderar, San Nicolás de los Arroyos, Buenos Aires, Argentina": null,
+ "Siderar, San Nicolás de los Arroyos, Buenos Aires, Argentina": null,
+ "L'Amalí, Olavarría, Buenos Aires, Argentina": {
+  "lat": -37.0396693,
+  "lon": -60.2955128,
+  "display_name": "Fábrica L'Amalí, Partido de Olavarría, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Loma Negra, Partido de Olavarría, Buenos Aires, Argentina": {
+  "lat": -36.980852,
+  "lon": -60.2789168,
+  "display_name": "Loma Negra, Partido de Olavarría, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "village"
+ },
+ "Villa Fortabat, Olavarría, Buenos Aires, Argentina": {
+  "lat": -36.980852,
+  "lon": -60.2789168,
+  "display_name": "Loma Negra, Partido de Olavarría, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "village"
+ },
+ "Comirsa, Ramallo, Buenos Aires, Argentina": {
+  "lat": -33.3828565,
+  "lon": -60.1597488,
+  "display_name": "Comirsa 1, Partido de Ramallo, Buenos Aires, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Villa General Savio, Ramallo, Buenos Aires, Argentina": {
+  "lat": -33.4350116,
+  "lon": -60.1459721,
+  "display_name": "Villa General Savio, Partido de Ramallo, Buenos Aires, 2912, Argentina",
+  "osm_type": "node",
+  "class": "place",
+  "type": "village",
+  "addresstype": "village"
+ },
+ "Represa Futaleufú, Chubut, Argentina": null,
+ "Dique Futaleufú, Chubut, Argentina": null,
+ "Ciudad de Resistencia, Chaco, Argentina": {
+  "lat": -27.4012466,
+  "lon": -58.9927193,
+  "display_name": "Ciudad de Charata, Don Santiago, Resistencia, Municipio de Resistencia, Departamento San Fernando, Chaco, H3500BZQ, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "residential",
+  "addresstype": "road"
+ },
+ "Resistencia, Departamento San Fernando, Chaco, Argentina": {
+  "lat": -27.6048829,
+  "lon": -59.1932003,
+  "display_name": "Municipio de Resistencia, Departamento San Fernando, Chaco, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "municipality"
+ },
+ "Ciudad de Luján de Cuyo, Mendoza, Argentina": {
+  "lat": -33.0397028,
+  "lon": -68.8790257,
+  "display_name": "Banco Nación, 20 de Septiembre, Distrito Ciudad de Luján de Cuyo, Departamento Luján de Cuyo, Mendoza, 5507, Argentina",
+  "osm_type": "way",
+  "class": "amenity",
+  "type": "bank",
+  "addresstype": "amenity"
+ },
+ "Luján de Cuyo, Distrito Ciudad de Luján de Cuyo, Mendoza, Argentina": {
+  "lat": -33.0397028,
+  "lon": -68.8790257,
+  "display_name": "Banco Nación, 20 de Septiembre, Distrito Ciudad de Luján de Cuyo, Departamento Luján de Cuyo, Mendoza, 5507, Argentina",
+  "osm_type": "way",
+  "class": "amenity",
+  "type": "bank",
+  "addresstype": "amenity"
+ },
+ "Parque Eólico Aluar, Chubut, Argentina": {
+  "lat": -42.6390399,
+  "lon": -65.25908,
+  "display_name": "Parque Eólico Aluar I, Departamento Biedma, Chubut, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Molino Harinero Tres Arroyos, Tres Arroyos, Buenos Aires, Argentina": {
+  "lat": -38.5839124,
+  "lon": -60.6074707,
+  "display_name": "Molino Harinero \"Las Rosas del Sur\", Ruta Nacional 3 Don Juan Manuel de Rosas, Micaela Cascallares, Partido de Tres Arroyos, Buenos Aires, Argentina",
+  "osm_type": "node",
+  "class": "historic",
+  "type": "ruins",
+  "addresstype": "historic"
+ },
+ "Ternium, San Nicolás, Buenos Aires, Argentina": null,
+ "Somisa, San Nicolás de los Arroyos, Buenos Aires, Argentina": {
+  "lat": -33.3790822,
+  "lon": -60.1781434,
+  "display_name": "Somisa, San Nicolás de los Arroyos, Partido de San Nicolás, Buenos Aires, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "suburb"
+ },
+ "Planta General Savio, San Nicolás de los Arroyos, Buenos Aires, Argentina": null,
+ "Central Futaleufú, Chubut, Argentina": {
+  "lat": -43.0795458,
+  "lon": -71.4630915,
+  "display_name": "Salón Central Derfel A. Roberts, 114, 28 de Julio, Trevelin, Municipio de Trevelin, Departamento Futaleufú, Chubut, 9203, Argentina",
+  "osm_type": "way",
+  "class": "amenity",
+  "type": "theatre",
+  "addresstype": "amenity"
+ },
+ "Hidroeléctrica Futaleufú, Chubut, Argentina": null,
+ "Futaleufú, Chubut, Argentina": {
+  "lat": -43.0654551,
+  "lon": -71.3621195,
+  "display_name": "Departamento Futaleufú, Chubut, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "state_district"
+ },
+ "Plaza 25 de Mayo, Resistencia, Chaco, Argentina": {
+  "lat": -27.4511431,
+  "lon": -58.9865082,
+  "display_name": "Plaza 25 de Mayo de 1810, Resistencia, Municipio de Resistencia, Departamento San Fernando, Chaco, Argentina",
+  "osm_type": "way",
+  "class": "leisure",
+  "type": "park",
+  "addresstype": "park"
+ },
+ "Distrito Ciudad de Luján de Cuyo, Mendoza, Argentina": {
+  "lat": -33.0391408,
+  "lon": -68.8799861,
+  "display_name": "Distrito Ciudad de Luján de Cuyo, Departamento Luján de Cuyo, Mendoza, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "town"
+ },
+ "Saint-Gobain, Llavallol, Buenos Aires, Argentina": null,
+ "Isover, Llavallol, Buenos Aires, Argentina": null,
+ "Parque Industrial Almirante Brown, Burzaco, Buenos Aires, Argentina": {
+  "lat": -34.8460921,
+  "lon": -58.4124102,
+  "display_name": "Parque Industrial Almirante Brown, Villa Hogar Alemán, Burzaco, Partido de Almirante Brown, Buenos Aires, B1852EMM, Argentina",
+  "osm_type": "way",
+  "class": "landuse",
+  "type": "industrial",
+  "addresstype": "industrial"
+ },
+ "Rawson, San Juan, Argentina": {
+  "lat": -31.6891689,
+  "lon": -68.4639902,
+  "display_name": "Rawson, San Juan, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "state_district"
+ },
+ "Calle 70 4467, San Martín, Buenos Aires, Argentina": {
+  "lat": -38.5620518,
+  "lon": -58.7598926,
+  "display_name": "4467, Calle 70, San Martín, Necochea, Partido de Necochea, Buenos Aires, B7630, Argentina",
+  "osm_type": "way",
+  "class": "place",
+  "type": "house",
+  "addresstype": "place"
+ },
+ "Stephenson 3075, Malvinas Argentinas, Buenos Aires, Argentina": {
+  "lat": -34.477508,
+  "lon": -58.6907692,
+  "display_name": "Jorge Stephenson, Pablo Nogués, Partido de Malvinas Argentinas, Buenos Aires, B1614ICA, Argentina",
+  "osm_type": "way",
+  "class": "highway",
+  "type": "residential",
+  "addresstype": "road"
+ },
+ "Parque Industrial La Isla, La Banda, Santiago del Estero, Argentina": null,
+ "La Banda, Santiago del Estero, Argentina": {
+  "lat": -27.7357077,
+  "lon": -64.2434402,
+  "display_name": "La Banda, Municipio de La Banda, Departamento Banda, Santiago del Estero, G4300, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "city"
+ },
+ "Ferreyra, Córdoba, Argentina": {
+  "lat": -31.4624553,
+  "lon": -64.1058999,
+  "display_name": "Ferreyra, Avenida Amadeo Sabattini, Nicolás Avellaneda, Córdoba, Municipio de Córdoba, Pedanía Capital, Departamento Capital, Córdoba, X5020, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "Alvear, Santa Fe, Argentina": {
+  "lat": -33.057523,
+  "lon": -60.6196127,
+  "display_name": "Alvear, Municipio de Alvear, Gran Rosario, Departamento Rosario, Santa Fe, Argentina",
+  "osm_type": "relation",
+  "class": "boundary",
+  "type": "administrative",
+  "addresstype": "village"
+ },
+ "James Craik, Córdoba, Argentina": {
+  "lat": -32.1641321,
+  "lon": -63.463883,
+  "display_name": "James Craik, Boulevard San Martín, James Craik, Municipio de James Craik, Pedanía Zorros, Departamento Tercero Arriba, Córdoba, X5980, Argentina",
+  "osm_type": "node",
+  "class": "railway",
+  "type": "station",
+  "addresstype": "railway"
+ },
+ "General San Martín, Partido de General San Martín, Buenos Aires, Argentina": {
+  "lat": -34.5626927,
+  "lon": -58.5937914,
+  "display_name": "General San Martín, Metrobús Ruta 8, Uta, Villa Ciudad Jardín El Libertador, Partido de General San Martín, Buenos Aires, B1657, Argentina",
+  "osm_type": "node",
+  "class": "highway",
+  "type": "bus_stop",
+  "addresstype": "highway"
+ }
+}

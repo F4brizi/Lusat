@@ -41,6 +41,7 @@
     let rawPowerPlants = [];
     let rawOilWells = [];
     let rawMiningProjects = [];
+    let rawIndustria = [];
     let isBboxActive = true;
     // INICIO CON TODAS LAS CAPAS APAGADAS (0 SATURACIÓN)
     let isPoliticalMasterVisible = false;
@@ -51,6 +52,7 @@
     let isGemLoaded = false;
     let isGridLoaded = false;
     let isMiningMasterVisible = false;
+    let isIndustriaMasterVisible = false;
     let isCadastreMasterVisible = false;
     let isRoadsMasterVisible = false;
     let isPlantsMasterVisible = false;
@@ -58,6 +60,19 @@
     let isGemMasterVisible = false;
     let isLandCoverMasterVisible = false;
     let activeFuels = new Set(['Nuclear', 'Hydro', 'Solar', 'Wind', 'Gas', 'Coal', 'Oil', 'Other']);
+
+    // Paleta semántica de Industria Basal (categoria_cod -> color)
+    const INDUSTRIA_CATEGORY_COLORS = {
+      CEM: '#9ca3af',
+      SID: '#ef4444',
+      ARI: '#b45309',
+      VID: '#22d3ee',
+      HID: '#3b82f6',
+      MAQ: '#f59e0b',
+      MOL: '#eab308',
+      ENE: '#a855f7'
+    };
+    const INDUSTRIA_CLOSED_STATES = ['CERRADA', 'EN_QUIEBRA/SUBASTA'];
 
     // Registro de 16 Fuentes de Datos para Auditoría
     const DATA_SOURCES = [
@@ -367,11 +382,42 @@
       sourceHealthState[s.id] = { status: 'pending', latency: null, httpCode: null, lastTested: null };
     });
 
+    // =========================================================
+    // MODO RENDIMIENTO (equipos de bajos recursos)
+    // Preferencia manual en localStorage; si no existe, se autodetecta por hardware.
+    // Desactiva: antialiasing MSAA, malla de terreno permanente, desenfoques CSS y
+    // animaciones infinitas. Limita el pixel ratio y la cache de teselas.
+    // =========================================================
+    function detectPerfMode() {
+      const saved = localStorage.getItem('lusat_perf_mode');
+      if (saved === '1') return true;
+      if (saved === '0') return false;
+      const cores = navigator.hardwareConcurrency || 4;
+      const memGb = navigator.deviceMemory || 8;
+      return cores <= 2 || memGb <= 4;
+    }
+    const PERF_MODE = detectPerfMode();
+    document.body.classList.toggle('perf-mode', PERF_MODE);
+    (function syncPerfButton() {
+      const btn = document.getElementById('btn-perf-mode');
+      if (btn) btn.classList.toggle('active', PERF_MODE);
+    })();
+
+    function togglePerfMode() {
+      const next = !PERF_MODE;
+      const msg = next
+        ? 'Activar MODO RENDIMIENTO: se desactivan desenfoques, antialiasing y la malla de terreno permanente (el altímetro solo mide con Relieve 3D activo). La página se recargará.'
+        : 'Desactivar MODO RENDIMIENTO: se restaura la calidad visual completa. La página se recargará.';
+      if (!confirm(msg)) return;
+      localStorage.setItem('lusat_perf_mode', next ? '1' : '0');
+      location.reload();
+    }
+
     // Inicializar Mapa MapLibre
     let protocol = new pmtiles.Protocol();
     maplibregl.addProtocol("pmtiles", protocol.tile);
 
-    const map = new maplibregl.Map({
+    const mapOptions = {
       container: 'map',
       transformRequest: (url, resourceType) => {
         if (url.includes('tile=')) {
@@ -412,8 +458,17 @@
       zoom: 5.8,
       pitch: 0,
       bearing: 0,
-      antialias: true
-    });
+      // MSAA es uno de los flags WebGL mas caros en GPUs integradas
+      antialias: !PERF_MODE,
+      // Evita re-validaciones periodicas de teselas ya cacheadas
+      refreshExpiredTiles: false
+    };
+    if (PERF_MODE) {
+      mapOptions.pixelRatio = 1;        // En pantallas 2x reduce 4 veces los pixeles renderizados
+      mapOptions.maxTileCacheSize = 40; // Acota la memoria de teselas (31 fuentes registradas)
+      mapOptions.fadeDuration = 0;      // Sin cross-fade entre teselas
+    }
+    const map = new maplibregl.Map(mapOptions);
 
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
     map.addControl(new maplibregl.FullscreenControl({ container: document.documentElement }), 'top-right');
@@ -449,8 +504,9 @@
           maxzoom: 15
         });
 
-        // Activar relieve físico 3D inicial con exageración 1.4x
-        map.setTerrain({ source: 'terrain-dem', exaggeration: 0.0001 });
+        // Terreno "plano" inicial (exageración 0.0001) solo fuera del modo rendimiento:
+        // aun plano, MapLibre tesela y renderiza la malla 3D en cada frame.
+        setFlatTerrain();
 
         // 1.b Curvas de Nivel con Cotas Numéricas en Metros (OpenTopoMap)
         loadMsg.innerText = 'Cargando Curvas de Nivel Topográficas (OpenTopoMap)...';
@@ -847,12 +903,79 @@
           }
         });
 
+        // 14. Industria Basal Argentina (Cemento, Siderurgia, Áridos, etc. - Lazy Load GeoJSON)
+        const industriaCategoryColor = ['match', ['get', 'categoria_cod'], ...Object.entries(INDUSTRIA_CATEGORY_COLORS).flat(), '#94a3b8'];
+        map.addSource('industria-src', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        map.addLayer({
+          id: 'industria-layer-exacta',
+          type: 'circle',
+          source: 'industria-src',
+          filter: ['==', ['get', 'precision_ubicacion'], 'EXACTA'],
+          layout: { 'visibility': 'none' },
+          paint: {
+            'circle-color': industriaCategoryColor,
+            'circle-radius': [
+              'interpolate', ['linear'], ['zoom'],
+              4, 4,
+              8, 7,
+              12, 11
+            ],
+            'circle-stroke-width': 1.2,
+            'circle-stroke-color': [
+              'case',
+              ['in', ['get', 'estado_operativo'], ['literal', INDUSTRIA_CLOSED_STATES]], '#f87171',
+              '#0f172a'
+            ],
+            'circle-opacity': 0.95
+          }
+        });
+        map.addLayer({
+          id: 'industria-layer-estimada',
+          type: 'circle',
+          source: 'industria-src',
+          filter: ['==', ['get', 'precision_ubicacion'], 'ESTIMADA'],
+          layout: { 'visibility': 'none' },
+          paint: {
+            'circle-color': industriaCategoryColor,
+            'circle-radius': [
+              'interpolate', ['linear'], ['zoom'],
+              4, 5,
+              8, 8.5,
+              12, 13
+            ],
+            'circle-stroke-width': 2,
+            'circle-stroke-color': industriaCategoryColor,
+            'circle-stroke-opacity': 0.9,
+            'circle-opacity': [
+              'case',
+              ['in', ['get', 'estado_operativo'], ['literal', INDUSTRIA_CLOSED_STATES]], 0.12,
+              0.25
+            ]
+          }
+        });
+
         // Altímetro en vivo bajo cursor (Cota en metros sobre el nivel del mar)
+        // Throttle a un frame: mousemove dispara decenas de veces por frame y cada
+        // queryTerrainElevation es un raycast contra la malla de terreno.
+        let lastMouseEvent = null;
+        let mouseFramePending = false;
         map.on('mousemove', (e) => {
+          lastMouseEvent = e;
+          if (mouseFramePending) return;
+          mouseFramePending = true;
+          requestAnimationFrame(() => {
+            mouseFramePending = false;
+            updateCursorTelemetry(lastMouseEvent);
+          });
+        });
+
+        function updateCursorTelemetry(e) {
           let elev = null;
-          try {
-            elev = map.queryTerrainElevation(e.lngLat);
-          } catch (err) {}
+          if (map.getTerrain()) {
+            try {
+              elev = map.queryTerrainElevation(e.lngLat);
+            } catch (err) {}
+          }
 
           const elevEl = document.getElementById('telemetry-elevation');
           const cardElevEl = document.getElementById('live-elevation-card');
@@ -874,7 +997,7 @@
             if (elevEl) elevEl.innerText = formatted;
             if (cardElevEl) cardElevEl.innerText = `${sign}${m.toLocaleString()}`;
           }
-        });
+        }
 
         // Detector de inclinación de cámara para el botón 3D superior
         map.on('pitch', () => {
@@ -1101,6 +1224,7 @@
           oilShale: document.getElementById('chk-oil-shale')?.checked ?? false,
           oilConv: document.getElementById('chk-oil-conv')?.checked ?? false,
           mining: document.getElementById('chk-mining')?.checked ?? false,
+          industria: document.getElementById('chk-industria')?.checked ?? false,
           cadastre: document.getElementById('chk-cadastre')?.checked ?? false,
           roads: document.getElementById('chk-roads')?.checked ?? false,
           plants: document.getElementById('chk-plants')?.checked ?? false,
@@ -1118,6 +1242,16 @@
           cadastre: document.getElementById('range-cadastre-opacity')?.value ?? 85,
           roads: document.getElementById('range-roads-opacity')?.value ?? 85,
           landcover: document.getElementById('range-opacity')?.value ?? 65
+        },
+        industriaCategories: {
+          cem: document.getElementById('chk-ind-cem')?.checked ?? true,
+          sid: document.getElementById('chk-ind-sid')?.checked ?? true,
+          ari: document.getElementById('chk-ind-ari')?.checked ?? true,
+          vid: document.getElementById('chk-ind-vid')?.checked ?? true,
+          hid: document.getElementById('chk-ind-hid')?.checked ?? true,
+          maq: document.getElementById('chk-ind-maq')?.checked ?? true,
+          mol: document.getElementById('chk-ind-mol')?.checked ?? true,
+          ene: document.getElementById('chk-ind-ene')?.checked ?? true
         },
         baseMap: activeBase,
         camera: {
@@ -1206,6 +1340,22 @@
         if (l.mining) {
           const chk = document.getElementById('chk-mining');
           if (chk) { chk.checked = true; toggleMasterMining(true); }
+        }
+        if (l.industria) {
+          if (config.industriaCategories) {
+            const ic = config.industriaCategories;
+            const setIndChk = (id, val) => { const c = document.getElementById(id); if (c) c.checked = val !== false; };
+            setIndChk('chk-ind-cem', ic.cem);
+            setIndChk('chk-ind-sid', ic.sid);
+            setIndChk('chk-ind-ari', ic.ari);
+            setIndChk('chk-ind-vid', ic.vid);
+            setIndChk('chk-ind-hid', ic.hid);
+            setIndChk('chk-ind-maq', ic.maq);
+            setIndChk('chk-ind-mol', ic.mol);
+            setIndChk('chk-ind-ene', ic.ene);
+          }
+          const chk = document.getElementById('chk-industria');
+          if (chk) { chk.checked = true; toggleMasterIndustria(true); }
         }
         if (l.cadastre) {
           const chk = document.getElementById('chk-cadastre');
@@ -1550,17 +1700,6 @@
     // Bottom Drawer & Panel UI Controls
     function toggleBottomDrawer() {
       const drawer = document.getElementById('bottom-drawer');
-      if (drawer.classList.contains('collapsed')) {
-        drawer.classList.remove('collapsed');
-        drawer.classList.add('open');
-      } else {
-        drawer.classList.add('collapsed');
-        drawer.classList.remove('open');
-      }
-    }
-
-    function toggleBottomDrawer() {
-      const drawer = document.getElementById('bottom-drawer');
       if (drawer.classList.contains('open')) {
         closeBottomDrawer();
       } else {
@@ -1600,17 +1739,20 @@
       }
     }
 
+    // Lista priorizada de modelos Gemini con fallback automático (única fuente de verdad)
+    const GEMINI_FALLBACK_MODELS = ['gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-1.5-flash'];
+
     function openCopilotLogic() {
-      // Autolimpieza y preconfiguración de clave verificada
+      // Autolimpieza de clave guardada (BYOK: nunca se inyecta una clave por defecto)
       const existingKey = localStorage.getItem('lusat_gemini_api_key');
       if (existingKey) {
         const cleanedKey = cleanGeminiKey(existingKey);
         if (cleanedKey !== existingKey) {
           localStorage.setItem('lusat_gemini_api_key', cleanedKey);
         }
-      } else {
-        localStorage.setItem('lusat_gemini_api_key', 'AQ.Ab8RN6Jxefgwq7m42jPipvHKDfIW8ub4jUZcf-2FNdxXJJonPA');
-        localStorage.setItem('lusat_gemini_model', 'gemini-3.5-flash');
+      } else if (!localStorage.getItem('lusat_gemini_model')) {
+        // Sin clave propia no se preconfigura ninguna: el modal BYOK la pide al usuario.
+        localStorage.setItem('lusat_gemini_model', GEMINI_FALLBACK_MODELS[0]);
       }
 
       updateCopilotKeyBanner();
@@ -1763,7 +1905,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
 
         const cleanKey = cleanGeminiKey(apiKey);
         // Lista priorizada de modelos con fallback automático resiliente
-        const fallbackModels = [model, 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-1.5-flash'];
+        const fallbackModels = [model, ...GEMINI_FALLBACK_MODELS];
         const uniqueModels = [...new Set(fallbackModels)];
         let successfulData = null;
         let activeWorkingModel = model;
@@ -1905,7 +2047,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     }
 
     function escapeHtml(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
     // Sincronizar estado de clave en la interfaz
@@ -2052,7 +2194,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       resEl.innerText = 'Probando conexión con Google Gemini API...';
 
       // Probar prioritariamente gemini-3.5-flash y gemini-3.5-flash-lite (100% estables)
-      const candidateModels = [selectedModel, 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-1.5-flash'];
+      const candidateModels = [selectedModel, ...GEMINI_FALLBACK_MODELS];
       const uniqueCandidates = [...new Set(candidateModels)];
       let successModel = null;
       let lastErrMsg = '';
@@ -2292,6 +2434,18 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
     let is3dTerrainMeshActive = true;
     let currentTerrainExaggeration = 1.4;
 
+    // Estado "plano": fuera del modo rendimiento mantiene una malla casi plana para que
+    // queryTerrainElevation siga midiendo; en modo rendimiento retira la malla por completo.
+    function setFlatTerrain() {
+      if (PERF_MODE) {
+        if (map.getTerrain()) map.setTerrain(null);
+        const elevEl = document.getElementById('telemetry-elevation');
+        if (elevEl) elevEl.innerText = '-- msnm';
+        return;
+      }
+      map.setTerrain({ source: 'terrain-dem', exaggeration: 0.0001 });
+    }
+
     function toggleMasterHillshade(enabled) { saveSessionConfig();
       isHillshadeMasterVisible = enabled;
       const v = enabled ? 'visible' : 'none';
@@ -2301,9 +2455,9 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       
       if (enabled) {
         if (is3dTerrainMeshActive) map.setTerrain({ source: 'terrain-dem', exaggeration: currentTerrainExaggeration });
-        else map.setTerrain({ source: 'terrain-dem', exaggeration: 0.0001 });
+        else setFlatTerrain();
       } else {
-        map.setTerrain({ source: 'terrain-dem', exaggeration: 0.0001 });
+        setFlatTerrain();
       }
 
       const dd = document.getElementById('dropdown-hillshade');
@@ -2334,7 +2488,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         map.setTerrain({ source: 'terrain-dem', exaggeration: currentTerrainExaggeration });
       } else {
         // Exaggeration 0.0001 preserves flat 2D appearance while queryTerrainElevation keeps sampling altitude
-        map.setTerrain({ source: 'terrain-dem', exaggeration: 0.0001 });
+        setFlatTerrain();
       }
     }
 
@@ -2446,6 +2600,9 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
               const res = await fetch('datasets/mining_lithium_projects_argentina.geojson');
               const data = await res.json();
               rawMiningProjects = data.features || [];
+              // Sin setData la fuente quedaba vacía y el toggle no dibujaba nada
+              const src = map.getSource('mining-projects-src');
+              if (src) src.setData({ type: 'FeatureCollection', features: rawMiningProjects });
           } catch(e) { console.error("Error loading mining", e); return; }
       }
       const fLit = document.getElementById('chk-min-lithium').checked;
@@ -2462,6 +2619,50 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       if (map.getLayer('mining-projects-layer')) {
         map.setFilter('mining-projects-layer', ['in', ['get', 'mineral'], ['literal', allowed]]);
       }
+    }
+
+    // Toggle Industria Basal
+    async function toggleMasterIndustria(enabled) { saveSessionConfig();
+      isIndustriaMasterVisible = enabled;
+      if (enabled) await applyIndustriaFilters();
+      const v = enabled ? 'visible' : 'none';
+      if (map.getLayer('industria-layer-exacta')) map.setLayoutProperty('industria-layer-exacta', 'visibility', v);
+      if (map.getLayer('industria-layer-estimada')) map.setLayoutProperty('industria-layer-estimada', 'visibility', v);
+      const dd = document.getElementById('dropdown-industria');
+      if (enabled) dd.classList.remove('disabled');
+      else dd.classList.add('disabled');
+    }
+
+    async function applyIndustriaFilters() {
+      if (!isIndustriaMasterVisible) return;
+      if (rawIndustria.length === 0) {
+          try {
+              const res = await fetch('datasets/industria_basal_argentina.geojson');
+              const data = await res.json();
+              rawIndustria = data.features || [];
+              const src = map.getSource('industria-src');
+              if (src) src.setData({ type: 'FeatureCollection', features: rawIndustria });
+          } catch(e) { console.error("Error loading industria", e); return; }
+      }
+
+      const industriaCodeMap = { cem: 'CEM', sid: 'SID', ari: 'ARI', vid: 'VID', hid: 'HID', maq: 'MAQ', mol: 'MOL', ene: 'ENE' };
+      const allowed = [];
+      Object.keys(industriaCodeMap).forEach(key => {
+        const chk = document.getElementById('chk-ind-' + key);
+        if (chk && chk.checked) allowed.push(industriaCodeMap[key]);
+      });
+
+      const categoryFilter = ['in', ['get', 'categoria_cod'], ['literal', allowed]];
+      if (map.getLayer('industria-layer-exacta')) {
+        map.setFilter('industria-layer-exacta', ['all', ['==', ['get', 'precision_ubicacion'], 'EXACTA'], categoryFilter]);
+      }
+      if (map.getLayer('industria-layer-estimada')) {
+        map.setFilter('industria-layer-estimada', ['all', ['==', ['get', 'precision_ubicacion'], 'ESTIMADA'], categoryFilter]);
+      }
+
+      const visibleCount = rawIndustria.filter(f => allowed.includes(f.properties.categoria_cod)).length;
+      const countEl = document.getElementById('ind-count-visible');
+      if (countEl) countEl.innerText = visibleCount.toLocaleString();
     }
 
     // Toggle Esquema Político
@@ -2987,6 +3188,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       let conds = ['any'];
       if (fGas) conds.push(['in', 'Gas', ['get', 'product']]);
       if (fOil) conds.push(['in', 'Oil', ['get', 'product']]);
+      if (!map.getLayer('gem-lines')) return;
       if (!fGas && !fOil) map.setLayoutProperty('gem-lines', 'visibility', 'none');
       else {
         map.setLayoutProperty('gem-lines', 'visibility', 'visible');
@@ -3131,7 +3333,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
       // Rutas
       // Interacción con Parcelas Catastrales de Formosa (IDEF Identify)
       map.on('click', async (e) => {
-        if (isBboxSelecting) return; // Si está dibujando el marco del Copilot, ignorar
+        if (isSelectingArea) return; // Si está dibujando el marco del Copilot, ignorar (antes referenciaba una variable inexistente)
         
         // Verificar si la capa de Formosa está activa
         const isFormosaVisible = map.getLayer('cadastre-formosa-layer') && map.getLayoutProperty('cadastre-formosa-layer', 'visibility') === 'visible';
@@ -3166,11 +3368,11 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
             const res = data.results[0];
             const a = res.attributes || {};
             const isRural = res.layerName === 'ParcelasRurales';
-            const partida = a.PARTIDA || a.PAR_PARTIDA || res.value || 'S/D';
-            const nomenc = a.NOMENCLATURA || a.PAR_NOMENCLATURA || 'N/D';
-            const expte = a.EXPEDIENTE || a.PAR_EXPEDIENTE || 'N/D';
-            const anio = a['AÑO'] || a.PAR_ANIO || '';
-            const letra = a.LETRA || a.PAR_LET_MENS || '';
+            const partida = escapeHtml(a.PARTIDA || a.PAR_PARTIDA || res.value || 'S/D');
+            const nomenc = escapeHtml(a.NOMENCLATURA || a.PAR_NOMENCLATURA || 'N/D');
+            const expte = escapeHtml(a.EXPEDIENTE || a.PAR_EXPEDIENTE || 'N/D');
+            const anio = escapeHtml(a['AÑO'] || a.PAR_ANIO || '');
+            const letra = escapeHtml(a.LETRA || a.PAR_LET_MENS || '');
 
             const popupHtml = `
               <div class="popup-title" style="color:#a78bfa;">📑 Parcela Catastral (${isRural ? 'Rural' : 'Urbana'})</div>
@@ -3245,8 +3447,8 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         
         const contentHtml = `
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; margin-bottom:16px;">
-            <div style="font-size:18px; font-weight:700; color:${color};">🚢 ${p.name || 'Buque Comercial'}</div>
-            <div style="font-size:12px; color:#94a3b8;">MMSI: <span style="color:#e2e8f0;">${p.mmsi}</span></div>
+            <div style="font-size:18px; font-weight:700; color:${color};">🚢 ${escapeHtml(p.name || 'Buque Comercial')}</div>
+            <div style="font-size:12px; color:#94a3b8;">MMSI: <span style="color:#e2e8f0;">${escapeHtml(p.mmsi)}</span></div>
           </div>
           
           <div class="inspector-grid">
@@ -3256,7 +3458,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
             </div>
             <div class="inspector-card">
               <div class="inspector-card-title">Tipo de Buque</div>
-              <div class="inspector-card-value" style="color:#f59e0b;">${p.shipTypeString || 'N/D'}</div>
+              <div class="inspector-card-value" style="color:#f59e0b;">${escapeHtml(p.shipTypeString || 'N/D')}</div>
             </div>
             <div class="inspector-card">
               <div class="inspector-card-title">Velocidad Actual (SOG)</div>
@@ -3272,7 +3474,7 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
             </div>
             <div class="inspector-card" style="grid-column: span 2;">
               <div class="inspector-card-title">Destino Declarado</div>
-              <div class="inspector-card-value" style="color:#38bdf8; font-size:16px;">${p.destination || 'Esperando...'}</div>
+              <div class="inspector-card-value" style="color:#38bdf8; font-size:16px;">${escapeHtml(p.destination || 'Esperando...')}</div>
             </div>
           </div>
         `;
@@ -3280,7 +3482,77 @@ INSTRUCCIÓN: Actúa como el analista de inteligencia geoespacial y estratégica
         openBottomDrawer('inspector');
       });
 
-      ['plants-layer', 'gem-lines', 'osm-lines', 'roads-vector-line', 'oil-wells-layer', 'mining-projects-layer', 'puertos-fluviales-layer', 'hidrovia-lines', 'cuencas-hidro-fill', 'cuerpos-agua-fill', 'flood-history-fill', 'ais-ships-layer'].forEach(layer => {
+      // Industria Basal - Send to Inspector Drawer
+      const industriaClickHandler = (e) => {
+        const p = e.features[0].properties;
+        const catColor = INDUSTRIA_CATEGORY_COLORS[p.categoria_cod] || '#94a3b8';
+        const estadoColor = p.estado_operativo === 'ACTIVA' ? '#10b981' : (p.estado_operativo === 'CERRADA' ? '#ef4444' : '#f59e0b');
+        const esEstimada = p.precision_ubicacion === 'ESTIMADA';
+        const precColor = esEstimada ? '#f59e0b' : '#38bdf8';
+        const precLabel = esEstimada ? 'UBICACIÓN ESTIMADA (centroide de localidad)' : 'UBICACIÓN EXACTA';
+
+        const capEstimadaHtml = p.capacidad_estimada ? `
+            <div class="inspector-card">
+              <div class="inspector-card-title">Capacidad Estimada</div>
+              <div class="inspector-card-value" style="color:#f59e0b;">${escapeHtml(p.capacidad_estimada)}</div>
+              ${p.confianza_estimacion ? `<div style="font-size:10px; color:#94a3b8; margin-top:3px;">Confianza: ${escapeHtml(p.confianza_estimacion)}</div>` : ''}
+              ${p.fuente_capacidad_estimada ? `<div style="font-size:10px; color:#64748b; margin-top:2px;">${escapeHtml(p.fuente_capacidad_estimada)}</div>` : ''}
+            </div>` : '';
+
+        const notasHtml = p.notas ? `
+          <div style="margin-top:10px; font-size:10.5px; color:#94a3b8; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
+            <b style="color:#e2e8f0;">Notas:</b> ${escapeHtml(p.notas)}
+          </div>` : '';
+
+        const contentHtml = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; margin-bottom:16px;">
+            <div>
+              <div style="font-size:18px; font-weight:700; color:${catColor};">🏭 ${escapeHtml(p.planta || 'Planta Industrial')}</div>
+              <div style="font-size:12px; color:#94a3b8; margin-top:2px;">${escapeHtml(p.empresa || 'N/D')}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:5px; align-items:flex-end;">
+              <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:${estadoColor}22; color:${estadoColor}; border:1px solid ${estadoColor};">${escapeHtml(p.estado_operativo || 'N/D')}</span>
+              <span style="font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:${precColor}22; color:${precColor}; border:1px solid ${precColor}; text-align:right;">${precLabel}</span>
+            </div>
+          </div>
+
+          <div class="inspector-grid">
+            <div class="inspector-card">
+              <div class="inspector-card-title">Categoría</div>
+              <div class="inspector-card-value" style="color:${catColor};">${escapeHtml(p.categoria || 'N/D')}</div>
+            </div>
+            <div class="inspector-card">
+              <div class="inspector-card-title">Subsector</div>
+              <div class="inspector-card-value">${escapeHtml(p.subsector || 'N/D')}</div>
+            </div>
+            <div class="inspector-card">
+              <div class="inspector-card-title">Capacidad Declarada</div>
+              <div class="inspector-card-value">${escapeHtml(p.capacidad_declarada || 'S/D')}</div>
+            </div>
+            ${capEstimadaHtml}
+            <div class="inspector-card">
+              <div class="inspector-card-title">Producto Principal</div>
+              <div class="inspector-card-value" style="color:#38bdf8;">${escapeHtml(p.producto_principal || 'N/D')}</div>
+            </div>
+            <div class="inspector-card">
+              <div class="inspector-card-title">Origen Materia Prima</div>
+              <div class="inspector-card-value">${escapeHtml(p.origen_materia_prima || 'N/D')}</div>
+            </div>
+            <div class="inspector-card" style="grid-column: span 2;">
+              <div class="inspector-card-title">Ubicación</div>
+              <div class="inspector-card-value" style="font-size:13px;">${escapeHtml(p.ubicacion_texto || 'N/D')}</div>
+              <div style="font-size:10.5px; color:#94a3b8; margin-top:3px;">${escapeHtml(p.localidad || '')}${p.localidad && p.provincia ? ', ' : ''}${escapeHtml(p.provincia || '')} · ${Number(p.lat).toFixed(4)}, ${Number(p.lon).toFixed(4)}</div>
+            </div>
+          </div>
+          ${notasHtml}
+        `;
+        document.getElementById('inspector-content').innerHTML = contentHtml;
+        openBottomDrawer('inspector');
+      };
+      map.on('click', 'industria-layer-exacta', industriaClickHandler);
+      map.on('click', 'industria-layer-estimada', industriaClickHandler);
+
+      ['plants-layer', 'gem-lines', 'osm-lines', 'roads-vector-line', 'oil-wells-layer', 'mining-projects-layer', 'industria-layer-exacta', 'industria-layer-estimada', 'puertos-fluviales-layer', 'hidrovia-lines', 'cuencas-hidro-fill', 'cuerpos-agua-fill', 'flood-history-fill', 'ais-ships-layer'].forEach(layer => {
         map.on('mouseenter', layer, () => { map.getCanvas().style.cursor = 'pointer'; });
         map.on('mouseleave', layer, () => { map.getCanvas().style.cursor = ''; });
       });

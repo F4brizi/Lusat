@@ -30,6 +30,11 @@ Bienvenido a **LUSAT v7**, la plataforma de inteligencia territorial y geoanáli
 ### ⛏️ Yacimientos Mineros & Salares de Litio (SIACAM / SEGEMAR / Global)
 * **101 Proyectos Mineros Estratégicos:** Litio, Cobre, Oro, Plata, Uranio y Potasio con fichas técnicas.
 
+### 🏭 Industria Basal Argentina (Inventario Georreferenciado)
+* **147 plantas y nodos en 8 sectores** (cemento/cal/yeso, siderurgia, áridos/cerámica, vidrio/aislaciones, hídrica/polímeros, maquinaria, molinería/alimentos, energía/material eléctrico), con empresa, producto, capacidad declarada, capacidad estimada con fuente y confianza, origen de materia prima y estado operativo.
+* **Precisión explícita por marcador:** relleno sólido = ubicación EXACTA (predio/dirección); anillo hueco = ESTIMADA (centroide de localidad). Anillo rojo = planta cerrada o en quiebra/subasta.
+* Fuente: `datasets/industria_basal_argentina.geojson` (unificado, filtrable por `categoria_cod`) y `datasets/industria/*.geojson` (uno por sector). Reporte técnico en `datasets/industria/reporte_tecnico.md`. Se regenera con `python scripts/industria/build_industria.py`.
+
 ### 📑 Catastro & Parcelas Rurales (Federación Provincial WMS)
 * **Formosa (IDEF SIT), Córdoba (IDECOR) y Santa Fe (SCIT / IDESF)** integrados vía OGC WMS oficial.
 
@@ -87,10 +92,18 @@ LUSAT v7 está diseñado con una arquitectura **100% Serverless y Descentralizad
 
 ---
 
-## 6. INICIO RÁPIDO
+## 6. ⚡ MODO RENDIMIENTO (EQUIPOS DE BAJOS RECURSOS)
+
+Botón `[ ⚡ ]` en la barra superior (se activa solo en equipos con 2 núcleos o 4 GB de RAM o menos; la elección manual se guarda en `localStorage`). Al activarlo, tras recargar:
+* Sin antialiasing MSAA, `pixelRatio` fijo en 1 y caché de teselas acotada.
+* La malla de terreno 3D no se crea hasta que se activa **Relieve 3D**: el altímetro bajo el cursor mide solo con el relieve encendido.
+* Sin desenfoques (`backdrop-filter`) ni animaciones permanentes en paneles.
+
+## 7. INICIO RÁPIDO
 
 Ejecuta en tu terminal o haz doble clic sobre:
 ```text
 iniciar_lusat.bat
 ```
+El servidor local (`servidor_local.py`) es multihilo y soporta peticiones `Range`, requisito de PMTiles para leer solo las teselas visibles en lugar del archivo completo.
 

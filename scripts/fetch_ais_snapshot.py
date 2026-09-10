@@ -56,9 +56,11 @@ async def collect_ais_data():
                     msg_type = data.get("MessageType")
                     meta = data.get("MetaData", {})
                     mmsi = meta.get("MMSI")
-                    
+
                     if not mmsi:
                         continue
+                    # Normalizar a str: las claves del JSON persistido siempre son str
+                    mmsi = str(mmsi)
                         
                     # Sync meta name to static db
                     name = meta.get("ShipName", "").strip()
@@ -114,12 +116,15 @@ async def collect_ais_data():
                     
     except Exception as e:
         print(f"Connection error: {e}")
+        # Sin datos recolectados no se sobreescribe el snapshot anterior
+        if not active_ships:
+            exit(1)
 
 def save_geojson():
     features = []
     for mmsi, ship in active_ships.items():
         if "lat" in ship and "lng" in ship:
-            db_info = static_db.get(str(mmsi), {})
+            db_info = static_db.get(mmsi, {})
             
             features.append({
                 "type": "Feature",

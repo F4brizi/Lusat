@@ -2033,3 +2033,42 @@
       transition: background 0.2s;
     }
     #pane-copilot .copilot-send-btn:hover { background: #7dd3fc; }
+
+    /* Swatch de color para categorías de Industria Basal */
+    .ind-swatch {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* =========================================================
+       MODO RENDIMIENTO (body.perf-mode)
+       backdrop-filter obliga a recomponer todo lo que hay detras del panel
+       (el canvas WebGL) en cada frame. Se reemplaza por fondos solidos.
+       ========================================================= */
+    body.perf-mode .tech-panel,
+    body.perf-mode #bottom-drawer,
+    body.perf-mode .copilot-panel,
+    body.perf-mode #cookie-banner,
+    body.perf-mode #health-modal-overlay,
+    body.perf-mode #cookie-policy-modal-overlay,
+    body.perf-mode #copilot-key-modal-overlay,
+    body.perf-mode #ais-key-modal-overlay {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    body.perf-mode .tech-panel {
+      background: rgba(15, 23, 42, 0.98);
+      box-shadow: none;
+    }
+    body.perf-mode #bottom-drawer {
+      background: rgba(4, 9, 20, 0.98);
+      box-shadow: none;
+    }
+    body.perf-mode .health-pulse-dot,
+    body.perf-mode .copilot-ai-sparkle {
+      animation: none !important;
+    }
