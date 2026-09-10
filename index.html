@@ -7,8 +7,8 @@
   
   <!-- MapLibre GL JS -->
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js"></script>
+  <script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script defer src="https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js"></script>
   
   <!-- Tipografía Técnica: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
 <body>
   <script>
     window.onerror = function(message, source, lineno, colno, error) {
-      alert("ERROR JS: " + message + " en linea " + lineno);
+      console.error("ERROR JS: " + message + " (" + source + ":" + lineno + ":" + colno + ")", error);
       return false;
     };
   </script>
@@ -70,6 +70,10 @@
         <span>FPS:</span>
         <span class="telemetry-val" id="fps-counter" style="color:#10b981;">60 FPS</span>
       </div>
+      <!-- Botón Modo Rendimiento (equipos de bajos recursos) -->
+      <button class="btn-top-3d" id="btn-perf-mode" onclick="togglePerfMode()" title="Modo Rendimiento: desactiva desenfoques, antialiasing y malla de terreno permanente para equipos de bajos recursos" aria-label="Alternar modo rendimiento">
+        <span>⚡</span>
+      </button>
       <!-- Botón Modo 3D Rápido -->
       <button class="btn-top-3d" id="btn-top-3d" onclick="toggle3DPerspective()" title="Alternar entre vista Cenital 2D y Relieve 3D">
         <span>🏔️ 3D</span>
@@ -419,6 +423,62 @@
             </div>
             <div style="display:flex; justify-content:flex-end; margin-top:3px;">
               <button class="btn-mini-action" onclick="flyToLocation('puna')">📍 Centrar Salares de Litio (Puna)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 3b: Industria Basal Argentina (Cemento, Siderurgia, Áridos, Vidrio, Hídrica, Maquinaria, Molinería, Energía) -->
+        <div class="layer-card">
+          <div class="layer-card-header">
+            <div class="layer-title-area" onclick="toggleDropdown('industria')">
+              <span class="caret-btn" id="caret-industria">▶</span>
+              <span class="layer-name" style="color:#f59e0b;">🏭 Industria Basal (Plantas)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="chk-industria" onchange="toggleMasterIndustria(this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="layer-dropdown collapsed disabled" id="dropdown-industria">
+            <div class="sub-filter-title">
+              <span>Categorías Industriales:</span>
+              <span>Visibles: <b id="ind-count-visible" style="color:#f59e0b;">0</b></span>
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#9ca3af;"></span> Cemento, Cal y Yeso</span>
+              <input type="checkbox" id="chk-ind-cem" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#ef4444;"></span> Siderurgia, Metalurgia y Perfilería</span>
+              <input type="checkbox" id="chk-ind-sid" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#b45309;"></span> Áridos, Cerámica Roja y Pisos</span>
+              <input type="checkbox" id="chk-ind-ari" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#22d3ee;"></span> Vidrio y Aislaciones</span>
+              <input type="checkbox" id="chk-ind-vid" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#3b82f6;"></span> Infraestructura Hídrica y Polímeros</span>
+              <input type="checkbox" id="chk-ind-hid" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#f59e0b;"></span> Maquinaria Pesada, Agrícola y Vial</span>
+              <input type="checkbox" id="chk-ind-maq" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#eab308;"></span> Molinería y Alimentos a Granel</span>
+              <input type="checkbox" id="chk-ind-mol" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div class="sub-check-row">
+              <span><span class="ind-swatch" style="background:#a855f7;"></span> Nodos Energéticos y Material Eléctrico</span>
+              <input type="checkbox" id="chk-ind-ene" checked onchange="applyIndustriaFilters()" />
+            </div>
+            <div style="margin-top:4px; font-size:10px; color:#94a3b8; line-height:1.4; border-top:1px solid rgba(255,255,255,0.05); padding-top:6px;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; border:1.5px solid #94a3b8; background:transparent; vertical-align:middle; margin-right:4px;"></span>
+              Círculos huecos = ubicación <b>ESTIMADA</b> (centroide de la localidad, no la dirección exacta de la planta).
             </div>
           </div>
         </div>
@@ -1032,7 +1092,7 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script defer src="js/main.js"></script>
 
 
   <!-- Banner de Uso de Cookies -->
